@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Backend\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ConfirmsPasswords;
+use Illuminate\Http\Request;
 
 class ConfirmPasswordController extends Controller
 {
@@ -26,7 +27,7 @@ class ConfirmPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/admin/index';
 
     /**
      * Create a new controller instance.
@@ -37,4 +38,15 @@ class ConfirmPasswordController extends Controller
     {
         $this->middleware('auth');
     }
+
+    public function showConfirmForm()
+    {
+        return view('backend.auth.passwords.confirm');
+    }
+
+    protected function resetPasswordConfirmationTimeout(Request $request)
+    {
+        $request->session()->put('backend.auth.password_confirmed_at', time());
+    }
+
 }

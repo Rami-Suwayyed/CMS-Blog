@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class RegisterController extends Controller
 {
@@ -29,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -41,6 +44,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegistrationForm()
+    {
+        return view('frontend.auth.register');
+    }
+
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -51,8 +60,11 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'mobile' => ['required', 'numeric', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'user_image' => ['nullable', 'image', 'max:20000', 'mimes:jpeg,jpg,png'],
         ]);
     }
 
@@ -64,10 +76,35 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
+            'mobile' => $data['mobile'],
             'password' => Hash::make($data['password']),
         ]);
+
+        if (isset($data['user_image'])) {
+            if ($image = $data['user_image']){
+                $filename = Str::slug($data['username']) . '.' . $image->getClientOriginalExtension();
+                $path = public_path('/assets/users/' . $filename);
+                Image::make($image->getRealPath())->resize(300, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($path, 100);
+                $user->update(['user_image' => $filename]);
+            }
+        }
+
+        return $user;
+
     }
+
+    protected function registered(Request $request, $user)
+    {
+        return redirect()->route('frontend.index')->with([
+            'message' => 'Your account registered successfully, Please check your email to activate your account.',
+            'alert-type' => 'success'
+        ]);
+    }
+
 }
