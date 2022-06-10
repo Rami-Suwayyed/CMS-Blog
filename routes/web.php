@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/',                                 [HomeController::class,'index'])->name('frontend.index');
+Route::get('/',                                 [App\Http\Controllers\Frontend\IndexController::class,'index'])->name('frontend.index');
 // Authentication Routes...
 Route::get('/login',                            [App\Http\Controllers\Frontend\LoginController::class,'showLoginForm'])->name('frontend.show_login_form');
 Route::post('login',                            [App\Http\Controllers\Frontend\LoginController::class,'login'])->name('frontend.login');
@@ -49,3 +49,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('password/reset/{token}',            [App\Http\Controllers\Backend\ResetPasswordController::class,'showResetForm'])->name('admin.password.reset');
     Route::post('password/reset',                   [App\Http\Controllers\Backend\ResetPasswordController::class,'reset'])->name('admin.password.update');
 });
+
+
+Route::get('/{post}',                               [App\Http\Controllers\Frontend\IndexController::class,'post_show'])->name('posts.show');
+Route::post('/{post}',                               [App\Http\Controllers\Frontend\IndexController::class,'store_comment'])->name('posts.add_comment');
