@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -26,7 +24,7 @@ class CommentsTableSeeder extends Seeder
         for($i = 0 ; $i < 5000; $i++) {
 
             $selected_post = $posts->random();
-            $post_date = $selected_post->created_at;
+            $post_date = $selected_post->created_at->timestamp;
             $current_date = Carbon::now()->timestamp;
 
             $comments[] = [
@@ -38,8 +36,8 @@ class CommentsTableSeeder extends Seeder
                 'status' => rand(0, 1),
                 'post_id' => $selected_post->id,
                 'user_id' => $users->random(),
-                // 'created_at' => date('Y-m-d H:i:s', rand($post_date, $current_date)),
-                // 'updated_at' => date('Y-m-d H:i:s', rand($post_date, $current_date)),
+                'created_at' => date('Y-m-d H:i:s', rand($post_date, $current_date)),
+                'updated_at' => date('Y-m-d H:i:s', rand($post_date, $current_date)),
             ];
 
         }

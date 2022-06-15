@@ -1,9 +1,11 @@
 <?php
 
+
 namespace Database\Seeders;
 
-use App\Models\Category;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
+
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -18,5 +20,6 @@ class CategoriesTableSeeder extends Seeder
         Category::create(['name' => 'Natural', 'status' => 1]);
         Category::create(['name' => 'Flowers', 'status' => 1]);
         Category::create(['name' => 'Kitchen', 'status' => 0]);
+
     }
 }

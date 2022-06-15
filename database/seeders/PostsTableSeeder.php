@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
@@ -27,8 +25,8 @@ class PostsTableSeeder extends Seeder
 
         for ($i = 0; $i < 1000; $i++) {
             $days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
-            $months = ['01', '02', '03', '04', '05'];
-            $post_date = "2022-" . Arr::random($months) . "-" . Arr::random($days) . " 01:01:01";
+            $months = ['01', '02', '03', '04', '05', '06', '07', '08'];
+            $post_date = "2020-" . Arr::random($months) . "-" . Arr::random($days) . " 01:01:01";
             $post_title = $faker->sentence(mt_rand(3, 6), true);
 
 
@@ -50,6 +48,7 @@ class PostsTableSeeder extends Seeder
         foreach ($chunks as $chunk) {
             Post::insert($chunk);
         }
+
 
     }
 }
