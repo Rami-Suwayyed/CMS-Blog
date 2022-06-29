@@ -109,7 +109,7 @@
     </div>
 
     <div class="col-lg-3 col-12 md-mt-40 sm-mt-40">
-        {{-- @include('partial.frontend.sidebar') --}}
+        @include('partial.frontend.sidebar')
     </div>
 
 @endsection

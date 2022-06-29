@@ -4,12 +4,21 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Post extends Model
 {
-    use HasFactory ,Sluggable;
+    use HasFactory ,Sluggable , SearchableTrait;
 
     protected $guarded = [];
+
+    protected $searchable = [
+        'columns'   => [
+            'posts.title'       => 10,
+            'posts.description' => 10,
+        ],
+    ];
+
 
     public function sluggable()
     {
@@ -20,7 +29,8 @@ class Post extends Model
         ];
     }
 
-   
+
+
     public function scopeActive($query)
     {
         return $query->where('status', 1);

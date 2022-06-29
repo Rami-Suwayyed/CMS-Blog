@@ -53,13 +53,10 @@ Route::group(['prefix' => 'admin'], function() {
 Route::get('/contact-us',                           [App\Http\Controllers\Frontend\IndexController::class,'contact'])->name('frontend.contact');
 Route::post('/contact-us',                          [App\Http\Controllers\Frontend\IndexController::class,'do_contact'])->name('frontend.do_contact');
 Route::get('/category/{category_slug}',             [App\Http\Controllers\Frontend\IndexController::class,'category'])->name('frontend.category.posts');
+Route::get('/archive/{date}',                       [App\Http\Controllers\Frontend\IndexController::class,'archive'])->name('frontend.archive.posts');
+Route::get('/author/{username}',                    [App\Http\Controllers\Frontend\IndexController::class,'author'])->name('frontend.author.posts');
+Route::get('/search',                               [App\Http\Controllers\Frontend\IndexController::class,'search'])->name('frontend.search');
 Route::get('/{post}',                               [App\Http\Controllers\Frontend\IndexController::class,'post_show'])->name('posts.show');
 Route::post('/{post}',                              [App\Http\Controllers\Frontend\IndexController::class,'store_comment'])->name('posts.add_comment');
 
 
-
-
-
-// Route::get('/archive/{date}',                   ['as' => 'frontend.archive.posts',          'uses' => 'Frontend\IndexController@archive']);
-// Route::get('/author/{username}',                ['as' => 'frontend.author.posts',           'uses' => 'Frontend\IndexController@author']);
-// Route::get('/search',                           ['as' => 'frontend.search',                 'uses' => 'Frontend\IndexController@search']);

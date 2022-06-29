@@ -32,6 +32,7 @@ class IndexController extends Controller
 
     public function search(Request $request)
     {
+        return $request->keyword;
         $keyword = isset($request->keyword) && $request->keyword != '' ? $request->keyword : null;
 
         $posts = Post::with(['media', 'user'])
