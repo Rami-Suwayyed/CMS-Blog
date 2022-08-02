@@ -45,6 +45,13 @@ Route::group(['middleware' => 'verified'], function () {
 
     Route::name("users.")->group(function () {
 
+
+    Route::any('user/notifications/get',  [NotificationsController::class,'getNotifications']);
+    Route::any('user/notifications/read',  [NotificationsController::class,'markAsRead']);
+    Route::any('user/notifications/read/{id}',  [NotificationsController::class,'markAsReadAndRedirect']);
+
+
+
     Route::get('/edit-info',                    [UsersController::class,'edit_info'])->name('edit_info');
     Route::post('/edit-info',                   [UsersController::class,'update_info'])->name('update_info');
     Route::post('/edit-password',               [UsersController::class,'update_password'])->name('update_password');

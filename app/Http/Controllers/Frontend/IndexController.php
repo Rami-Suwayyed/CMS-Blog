@@ -154,15 +154,15 @@ class IndexController extends Controller
             $data['email']          = $request->email;
             $data['url']            = $request->url;
             $data['ip_address']     = $request->ip();
-            // $data['comment']        = Purify::clean($request->comment);
+            $data['comment']        = Purify::clean($request->comment);
             $data['post_id']        = $post->id;
             $data['user_id']        = $userId;
 
             $comment = $post->comments()->create($data);
 
-            // if (auth()->guest() || auth()->id() != $post->user_id) {
-            //     $post->user->notify(new NewCommentForPostOwnerNotify($comment));
-            // }
+            if (auth()->guest() || auth()->id() != $post->user_id) {
+                $post->user->notify(new NewCommentForPostOwnerNotify($comment));
+            }
 
             // User::whereHas('roles', function ($query) {
             //     $query->whereIn('name', ['admin', 'editor']);
