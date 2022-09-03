@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\Backend\IndexController;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,84 +12,102 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/',                                 ['as' => 'frontend.index',      'uses' => 'App\Http\Controllers\Frontend\IndexController@index']);
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/',                                 [App\Http\Controllers\Frontend\IndexController::class,'index'])->name('frontend.index');
 // Authentication Routes...
-Route::get('/login',                            [App\Http\Controllers\Frontend\Auth\LoginController::class,'showLoginForm'])->name('frontend.show_login_form');
-Route::post('login',                            [App\Http\Controllers\Frontend\Auth\LoginController::class,'login'])->name('frontend.login');
-Route::post('logout',                           [App\Http\Controllers\Frontend\Auth\LoginController::class,'logout'])->name('frontend.logout');
-Route::get('register',                          [App\Http\Controllers\Frontend\Auth\RegisterController::class,'showRegistrationForm'])->name('frontend.show_register_form');
-Route::post('register',                         [App\Http\Controllers\Frontend\Auth\RegisterController::class,'register'])->name('frontend.register');
-Route::get('password/reset',                    [App\Http\Controllers\Frontend\Auth\ForgotPasswordController::class,'showLinkRequestForm'])->name('password.request');
-Route::post('password/email',                   [App\Http\Controllers\Frontend\Auth\ForgotPasswordController::class,'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}',            [App\Http\Controllers\Frontend\Auth\ResetPasswordController::class,'showResetForm'])->name('password.reset');
-Route::post('password/reset',                   [App\Http\Controllers\Frontend\Auth\ResetPasswordController::class,'reset'])->name('password.update');
-Route::get('email/verify',                      [App\Http\Controllers\Frontend\Auth\VerificationController::class,'show'])->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}',         [App\Http\Controllers\Frontend\Auth\VerificationController::class,'verify'])->name('verification.verify');
-Route::post('email/resend',                     [App\Http\Controllers\Frontend\Auth\VerificationController::class,'resend'])->name('verification.resend');
+Route::get('/login',                            ['as' => 'frontend.show_login_form',        'uses' => 'App\Http\Controllers\Frontend\Auth\LoginController@showLoginForm']);
+Route::post('login',                            ['as' => 'frontend.login',                  'uses' => 'App\Http\Controllers\Frontend\Auth\LoginController@login']);
+Route::post('logout',                           ['as' => 'frontend.logout',                 'uses' => 'App\Http\Controllers\Frontend\Auth\LoginController@logout']);
+Route::get('register',                          ['as' => 'frontend.show_register_form',     'uses' => 'App\Http\Controllers\Frontend\Auth\RegisterController@showRegistrationForm']);
+Route::post('register',                         ['as' => 'frontend.register',               'uses' => 'App\Http\Controllers\Frontend\Auth\RegisterController@register']);
+Route::get('password/reset',                    ['as' => 'password.request',                'uses' => 'App\Http\Controllers\Frontend\Auth\ForgotPasswordController@showLinkRequestForm']);
+Route::post('password/email',                   ['as' => 'password.email',                  'uses' => 'App\Http\Controllers\Frontend\Auth\ForgotPasswordController@sendResetLinkEmail']);
+Route::get('password/reset/{token}',            ['as' => 'password.reset',                  'uses' => 'App\Http\Controllers\Frontend\Auth\ResetPasswordController@showResetForm']);
+Route::post('password/reset',                   ['as' => 'password.update',                 'uses' => 'App\Http\Controllers\Frontend\Auth\ResetPasswordController@reset']);
+Route::get('email/verify',                      ['as' => 'verification.notice',             'uses' => 'App\Http\Controllers\Frontend\Auth\VerificationController@show']);
+Route::get('/email/verify/{id}/{hash}',         ['as' => 'verification.verify',             'uses' => 'App\Http\Controllers\Frontend\Auth\VerificationController@verify']);
+Route::post('email/resend',                     ['as' => 'verification.resend',             'uses' => 'App\Http\Controllers\Frontend\Auth\VerificationController@resend']);
 
 
 Route::group(['middleware' => 'verified'], function () {
-    Route::get('/dashboard',                    [UsersController::class,'index'])->name('frontend.dashboard');
+    Route::get('/dashboard',                    ['as' => 'frontend.dashboard',              'uses' => 'App\Http\Controllers\Frontend\UsersController@index']);
+
+    Route::any('user/notifications/get', 'App\Http\Controllers\Frontend\NotificationsController@getNotifications');
+    Route::any('user/notifications/read', 'App\Http\Controllers\Frontend\NotificationsController@markAsRead');
+    Route::any('user/notifications/read/{id}', 'App\Http\Controllers\Frontend\NotificationsController@markAsReadAndRedirect');
 
 
-    Route::name("users.")->group(function () {
+    Route::get('/edit-info',                    ['as' => 'users.edit_info',                 'uses' => 'App\Http\Controllers\Frontend\UsersController@edit_info']);
+    Route::post('/edit-info',                   ['as' => 'users.update_info',               'uses' => 'App\Http\Controllers\Frontend\UsersController@update_info']);
+    Route::post('/edit-password',               ['as' => 'users.update_password',           'uses' => 'App\Http\Controllers\Frontend\UsersController@update_password']);
 
 
-    Route::any('user/notifications/get',  [NotificationsController::class,'getNotifications']);
-    Route::any('user/notifications/read',  [NotificationsController::class,'markAsRead']);
-    Route::any('user/notifications/read/{id}',  [NotificationsController::class,'markAsReadAndRedirect']);
+    Route::get('/create-post',                  ['as' => 'users.post.create',               'uses' => 'App\Http\Controllers\Frontend\UsersController@create_post']);
+    Route::post('/create-post',                 ['as' => 'users.post.store',                'uses' => 'App\Http\Controllers\Frontend\UsersController@store_post']);
 
+    Route::get('/edit-post/{post_id}',          ['as' => 'users.post.edit',                 'uses' => 'App\Http\Controllers\Frontend\UsersController@edit_post']);
+    Route::put('/edit-post/{post_id}',          ['as' => 'users.post.update',               'uses' => 'App\Http\Controllers\Frontend\UsersController@update_post']);
 
+    Route::delete('/delete-post/{post_id}',     ['as' => 'users.post.destroy',              'uses' => 'App\Http\Controllers\Frontend\UsersController@destroy_post']);
+    Route::post('/delete-post-media/{media_id}',['as' => 'users.post.media.destroy',        'uses' => 'App\Http\Controllers\Frontend\UsersController@destroy_post_media']);
 
-    Route::get('/edit-info',                    [UsersController::class,'edit_info'])->name('edit_info');
-    Route::post('/edit-info',                   [UsersController::class,'update_info'])->name('update_info');
-    Route::post('/edit-password',               [UsersController::class,'update_password'])->name('update_password');
+    Route::get('/comments',                     ['as' => 'users.comments',                  'uses' => 'App\Http\Controllers\Frontend\UsersController@show_comments']);
+    Route::get('/edit-comment/{comment_id}',    ['as' => 'users.comment.edit',                 'uses' => 'App\Http\Controllers\Frontend\UsersController@edit_comment']);
+    Route::put('/edit-comment/{comment_id}',    ['as' => 'users.comment.update',               'uses' => 'App\Http\Controllers\Frontend\UsersController@update_comment']);
 
-
-    Route::get('/create-post',                  [UsersController::class,'create_post'])->name('post.create');
-    Route::post('/create-post',                 [UsersController::class,'store_post'])->name('post.store');
-
-    Route::get('/edit-post/{post_id}',          [UsersController::class,'edit_post'])->name('post.edit');
-    Route::put('/edit-post/{post_id}',          [UsersController::class,'update_post'])->name('post.update');
-
-    Route::delete('/delete-post/{post_id}',     [UsersController::class,'destroy_post'])->name('post.destroy');
-    Route::post('/delete-post-media/{media_id}',[UsersController::class,'destroy_post_media'])->name('post.media.destroy');
-
-    Route::get('/comments',                     [UsersController::class,'show_comments'])->name('comments');
-    Route::get('/edit-comment/{comment_id}',    [UsersController::class,'edit_comment'])->name('comment.edit');
-    Route::put('/edit-comment/{comment_id}',    [UsersController::class,'update_comment'])->name('comment.update');
-
-    Route::delete('/delete-comment/{comment_id}',[UsersController::class,'destroy_comment'])->name('comment.destroy');
+    Route::delete('/delete-comment/{comment_id}',['as' => 'users.comment.destroy',              'uses' => 'App\Http\Controllers\Frontend\UsersController@destroy_comment']);
 
 });
-});
+
+
 
 Route::group(['prefix' => 'admin'], function() {
     // Authentication Routes...
-    Route::get('/login',                            [App\Http\Controllers\Backend\Auth\LoginController::class,'showLoginForm'])->name('admin.show_login_form');
-    Route::post('login',                            [App\Http\Controllers\Backend\Auth\LoginController::class,'login'])->name('admin.login');
-    Route::post('logout',                           [App\Http\Controllers\Backend\Auth\LoginController::class,'logout'])->name('admin.logout');
-    Route::get('password/reset',                    [App\Http\Controllers\Backend\Auth\ForgotPasswordController::class,'showLinkRequestForm'])->name('password.request');
-    Route::post('password/email',                   [App\Http\Controllers\Backend\Auth\ForgotPasswordController::class,'sendResetLinkEmail'])->name('password.email');
-    Route::get('password/reset/{token}',            [App\Http\Controllers\Backend\Auth\ResetPasswordController::class,'showResetForm'])->name('password.reset');
-    Route::post('password/reset',                   [App\Http\Controllers\Backend\Auth\ResetPasswordController::class,'reset'])->name('password.update');
+    Route::get('/login',                            ['as' => 'admin.show_login_form',       'uses' => 'App\Http\Controllers\Backend\Auth\LoginController@showLoginForm']);
+    Route::post('login',                            ['as' => 'admin.login',                 'uses' => 'App\Http\Controllers\Backend\Auth\LoginController@login']);
+    Route::post('logout',                           ['as' => 'admin.logout',                'uses' => 'App\Http\Controllers\Backend\Auth\LoginController@logout']);
+    Route::get('password/reset',                    ['as' => 'admin.password.request',      'uses' => 'App\Http\Controllers\Backend\Auth\ForgotPasswordController@showLinkRequestForm']);
+    Route::post('password/email',                   ['as' => 'admin.password.email',        'uses' => 'App\Http\Controllers\Backend\Auth\ForgotPasswordController@sendResetLinkEmail']);
+    Route::get('password/reset/{token}',            ['as' => 'admin.password.reset',        'uses' => 'App\Http\Controllers\Backend\Auth\ResetPasswordController@showResetForm']);
+    Route::post('password/reset',                   ['as' => 'admin.password.update',       'uses' => 'App\Http\Controllers\Backend\Auth\ResetPasswordController@reset']);
+
+    Route::group(['middleware' => ['roles', 'role:admin|editor']], function() {
+        Route::any('/notifications/get', 'App\Http\Controllers\Backend\NotificationsController@getNotifications');
+        Route::any('/notifications/read', 'App\Http\Controllers\Backend\NotificationsController@markAsRead');
+        Route::any('/notifications/read/{id}', 'App\Http\Controllers\Backend\NotificationsController@markAsReadAndRedirect');
+
+
+        Route::get('/',                             ['as' => 'admin.index_route',           'uses' => 'App\Http\Controllers\Backend\AdminController@index']);
+        Route::get('/index',                        ['as' => 'admin.index',                 'uses' => 'App\Http\Controllers\Backend\AdminController@index']);
+
+        Route::post('/posts/removeImage/{media_id}',['as' => 'admin.posts.media.destroy', 'uses' => 'App\Http\Controllers\Backend\PostsController@removeImage']);
+        Route::resource('posts',                    'App\Http\Controllers\Backend\PostsController', ['as' => 'admin']);
+
+        Route::post('/pages/removeImage/{media_id}',['as' => 'admin.pages.media.destroy', 'uses' => 'App\Http\Controllers\Backend\PagesController@removeImage']);
+        Route::resource('pages',                    'App\Http\Controllers\Backend\PagesController', ['as' => 'admin']);
+
+        Route::resource('post_comments',            'App\Http\Controllers\Backend\PostCommentsController', ['as' => 'admin']);
+        Route::resource('post_categories',          'App\Http\Controllers\Backend\PostCategoriesController', ['as' => 'admin']);
+
+        Route::resource('contact_us',               'App\Http\Controllers\Backend\ContactUsController', ['as' => 'admin']);
+
+        Route::post('/users/removeImage',           ['as' => 'admin.users.remove_image', 'uses' => 'App\Http\Controllers\Backend\UsersController@removeImage']);
+        Route::resource('users',                    'App\Http\Controllers\Backend\UsersController', ['as' => 'admin']);
+        Route::post('/supervisors/removeImage',     ['as' => 'admin.supervisors.remove_image', 'uses' => 'App\Http\Controllers\Backend\SupervisorsController@removeImage']);
+        Route::resource('supervisors',              'App\Http\Controllers\Backend\SupervisorsController', ['as' => 'admin']);
+
+        Route::resource('settings',                 'App\Http\Controllers\Backend\SettingsController', ['as' => 'admin']);
+
+    });
+
 });
 
-Route::get('/contact-us',                           [App\Http\Controllers\Frontend\IndexController::class,'contact'])->name('frontend.contact');
-Route::post('/contact-us',                          [App\Http\Controllers\Frontend\IndexController::class,'do_contact'])->name('frontend.do_contact');
-Route::get('/category/{category_slug}',             [App\Http\Controllers\Frontend\IndexController::class,'category'])->name('frontend.category.posts');
-Route::get('/archive/{date}',                       [App\Http\Controllers\Frontend\IndexController::class,'archive'])->name('frontend.archive.posts');
-Route::get('/author/{username}',                    [App\Http\Controllers\Frontend\IndexController::class,'author'])->name('frontend.author.posts');
-Route::get('/search',                               [App\Http\Controllers\Frontend\IndexController::class,'search'])->name('frontend.search');
-Route::get('/{post}',                               [App\Http\Controllers\Frontend\IndexController::class,'post_show'])->name('posts.show');
-Route::post('/{post}',                              [App\Http\Controllers\Frontend\IndexController::class,'store_comment'])->name('posts.add_comment');
-
-
+Route::get('/contact-us',                       ['as' => 'frontend.contact',                'uses' => 'App\Http\Controllers\Frontend\IndexController@contact']);
+Route::post('/contact-us',                      ['as' => 'frontend.do_contact',             'uses' => 'App\Http\Controllers\Frontend\IndexController@do_contact']);
+Route::get('/category/{category_slug}',         ['as' => 'frontend.category.posts',         'uses' => 'App\Http\Controllers\Frontend\IndexController@category']);
+Route::get('/archive/{date}',                   ['as' => 'frontend.archive.posts',          'uses' => 'App\Http\Controllers\Frontend\IndexController@archive']);
+Route::get('/author/{username}',                ['as' => 'frontend.author.posts',           'uses' => 'App\Http\Controllers\Frontend\IndexController@author']);
+Route::get('/search',                           ['as' => 'frontend.search',                 'uses' => 'App\Http\Controllers\Frontend\IndexController@search']);
+Route::get('/{post}',                           ['as' => 'posts.show',                      'uses' => 'App\Http\Controllers\Frontend\IndexController@post_show']);
+Route::post('/{post}',                          ['as' => 'posts.add_comment',               'uses' => 'App\Http\Controllers\Frontend\IndexController@store_comment']);
