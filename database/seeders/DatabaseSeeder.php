@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use SettingsTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PostsTableSeeder::class);
         $this->call(PagesTableSeeder::class);
         $this->call(CommentsTableSeeder::class);
-        // $this->call(SettingsTableSeeder::class);
+        $this->call(SettingsTableSeeder::class);
 
     }
 }

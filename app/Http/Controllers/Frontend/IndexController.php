@@ -164,11 +164,11 @@ class IndexController extends Controller
                 $post->user->notify(new NewCommentForPostOwnerNotify($comment));
             }
 
-            // User::whereHas('roles', function ($query) {
-            //     $query->whereIn('name', ['admin', 'editor']);
-            // })->each(function ($admin, $key) use ($comment) {
-            //     $admin->notify(new NewCommentForAdminNotify($comment));
-            // });
+            User::whereHas('roles', function ($query) {
+                $query->whereIn('name', ['admin', 'editor']);
+            })->each(function ($admin, $key) use ($comment) {
+                $admin->notify(new NewCommentForAdminNotify($comment));
+            });
 
             return redirect()->back()->with([
                 'message' => 'Comment added successfully',
