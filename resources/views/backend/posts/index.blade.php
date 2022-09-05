@@ -59,7 +59,7 @@
                 <tr>
                     <th colspan="7">
                         <div class="float-right">
-                            {!! $posts->appends(request()->input())->links("pagination::bootstrap-4") !!}
+                            {!! $posts->appends(request()->input())->links() !!}
                         </div>
                     </th>
                 </tr>

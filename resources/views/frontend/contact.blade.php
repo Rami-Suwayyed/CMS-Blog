@@ -35,8 +35,7 @@
     <div class="col-lg-4 col-12 md-mt-40 sm-mt-40">
         <div class="wn__address">
             <h2 class="contact__title">Get office info.</h2>
-            {{-- <p>Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. </p> --}}
-            <p>{!! getSettingsOf('site_description') !!}</p>
+            <p>Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. </p>
             <div class="wn__addres__wreapper">
 
                 <div class="single__address">

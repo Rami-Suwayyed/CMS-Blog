@@ -57,7 +57,7 @@
                 <tr>
                     <th colspan="6">
                         <div class="float-right">
-                            {!! $pages->appends(request()->input())->links("pagination::bootstrap-4") !!}
+                            {!! $pages->appends(request()->input())->links() !!}
                         </div>
                     </th>
                 </tr>

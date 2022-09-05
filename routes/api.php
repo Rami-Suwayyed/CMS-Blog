@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/chart/comments_chart', 'Backend\Api\ApiController@comments_chart');
+Route::get('/chart/users_chart', 'Backend\Api\ApiController@users_chart');
+

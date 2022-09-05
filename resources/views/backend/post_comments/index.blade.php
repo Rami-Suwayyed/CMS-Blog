@@ -32,7 +32,7 @@
                             </div>
                         </td>
                         <td>{{ $comment->status() }}</td>
-                        {{-- <td>{{ $comment->created_at->format('d-m-Y h:i a') }}</td> --}}
+                        <td>{{ $comment->created_at->format('d-m-Y h:i a') }}</td>
                         <td>
                             <div class="btn-group">
                                 <a href="{{ route('admin.post_comments.edit', $comment->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
@@ -54,7 +54,7 @@
                 <tr>
                     <th colspan="6">
                         <div class="float-right">
-                            {!! $comments->appends(request()->input())->links("pagination::bootstrap-4") !!}
+                            {!! $comments->appends(request()->input())->links() !!}
                         </div>
                     </th>
                 </tr>

@@ -36,8 +36,8 @@
                         <h2>{{ $post->title }}</h2>
                         <div class="blog-date-categori">
                             <ul>
-                                {{-- <li>{{ $post->created_at->format('M d, Y') }}</li> --}}
-                                {{-- <li><a href="{{ route('frontend.author.posts', $post->user->username) }}" title="Posts by {{ $post->user->name }}" rel="author">{{ $post->user->name }}</a></li> --}}
+                                <li>{{ $post->created_at->format('M d, Y') }}</li>
+                                <li><a href="{{ route('frontend.author.posts', $post->user->username) }}" title="Posts by {{ $post->user->name }}" rel="author">{{ $post->user->name }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                                 <div class="content">
                                     <div class="comnt__author d-block d-sm-flex">
                                         <span><a href="{{ $comment->url != '' ? $comment->url : '#' }}">{{ $comment->name }}</a></span>
-                                        {{-- <span>{{ $comment->created_at->format('M d Y h:i a') }}</span> --}}
+                                        <span>{{ $comment->created_at->format('M d Y h:i a') }}</span>
                                     </div>
                                     <p>{{ $comment->comment }}</p>
                                 </div>
