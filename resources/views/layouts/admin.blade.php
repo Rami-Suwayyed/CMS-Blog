@@ -22,7 +22,8 @@
     <link href="{{ asset('backend/vendor/bootstrap-fileinput/css/fileinput.min.css') }}" rel="stylesheet">
     <link href="{{ asset('backend/vendor/summernote/summernote-bs4.min.css') }}" rel="stylesheet">
     @yield('style')
-    @livewireStyles
+
+    @livewireStyles()
 </head>
 <body id="page-top">
     <div id="app">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Api\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/chart/comments_chart', 'Backend\Api\ApiController@comments_chart');
-Route::get('/chart/users_chart', 'Backend\Api\ApiController@users_chart');
+Route::get('/chart/comments_chart', [ApiController::class ,'comments_chart']);
+Route::get('/chart/users_chart',  [ApiController::class ,'users_chart']);
 
