@@ -5,15 +5,17 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewCommentForPostOwnerNotify extends Notification implements ShouldQueue , ShouldBroadcast
+class NewCommentForPostOwnerNotify extends Notification implements ShouldQueue, ShouldBroadcast
 {
     use Queueable;
 
     protected $comment;
+
+
     /**
      * Create a new notification instance.
      *
@@ -51,9 +53,9 @@ class NewCommentForPostOwnerNotify extends Notification implements ShouldQueue ,
     public function toMail($notifiable)
     {
         return (new MailMessage)
-        ->line('There is new comment from ' . $this->comment->name . ' on your post ' . $this->comment->post->title . '.')
-        ->action('Go to your post', route('users.comment.edit', $this->comment->id))
-        ->line('Thank you for using Bloggi System');
+                    ->line('There is new comment from ' . $this->comment->name . ' on your post ' . $this->comment->post->title . '.')
+                    ->action('Go to your post', route('users.comment.edit', $this->comment->id))
+                    ->line('Thank you for using Bloggi System');
     }
 
     /**

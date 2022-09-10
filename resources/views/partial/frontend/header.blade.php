@@ -13,8 +13,8 @@
                 <nav class="mainmenu__nav">
                     <ul class="meninmenu d-flex justify-content-start">
                         <li class="drop with--one--item"><a href="{{ route('frontend.index') }}">Home</a></li>
-                        <li class="drop with--one--item"><a href="{{ route('posts.show', 'about-us') }}">About Us</a></li>
-                        <li class="drop with--one--item"><a href="{{ route('posts.show', 'our-vision') }}">Our Vision</a></li>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', 'about-us') }}">About Us</a></li>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', 'our-vision') }}">Our Vision</a></li>
                         <li class="drop"><a href="javascript:void(0);">Blog</a>
                             <div class="megamenu dropdown">
                                 <ul class="item item01">
@@ -49,7 +49,7 @@
                                                     <span><a href="{{ route('frontend.show_login_form') }}">Login</a></span>
                                                     <span><a href="{{ route('frontend.show_register_form') }}">Register</a></span>
                                                 @else
-                                                    <span><a href="{{ route('frontend.dashboard') }}">My Dashboard</a></span>
+                                                    <span><a href="{{ route('users.dashboard') }}">My Dashboard</a></span>
                                                     <span><a href="{{ route('frontend.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></span>
                                                     <form id="logout-form" action="{{ route('frontend.logout') }}" method="POST" style="display: none;">
                                                         @csrf
@@ -72,8 +72,8 @@
                 <nav class="mobilemenu__nav">
                     <ul class="meninmenu">
                         <li><a href="{{ route('frontend.index') }}">Home</a></li>
-                        <li><a href="{{ route('posts.show', 'about-us') }}">About Us</a></li>
-                        <li><a href="{{ route('posts.show', 'our-vision') }}">Our Vision</a></li>
+                        <li><a href="{{ route('frontend.posts.show', 'about-us') }}">About Us</a></li>
+                        <li><a href="{{ route('frontend.posts.show', 'our-vision') }}">Our Vision</a></li>
                         <li><a href="javascript:void(0);">Blog</a>
                             <ul>
                                 <li><a href="#">Un-Categorized</a></li>

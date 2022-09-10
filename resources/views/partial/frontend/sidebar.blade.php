@@ -20,7 +20,7 @@
                     <li>
                         <div class="post-wrapper d-flex">
                             <div class="thumb">
-                                <a href="{{ route('posts.show', $recent_post->slug) }}">
+                                <a href="{{ route('frontend.posts.show', $recent_post->slug) }}">
                                     @if($recent_post->media->count() > 0)
                                         <img src="{{ asset('assets/posts/' . $recent_post->media->first()->file_name) }}" alt="{{ $recent_post->title }}">
                                     @else
@@ -29,7 +29,7 @@
                                 </a>
                             </div>
                             <div class="content">
-                                <h4><a href="{{ route('posts.show', $recent_post->slug) }}">{{ \Illuminate\Support\Str::limit($recent_post->title, 15, '...') }}</a></h4>
+                                <h4><a href="{{ route('frontend.posts.show', $recent_post->slug) }}">{{ \Illuminate\Support\Str::limit($recent_post->title, 15, '...') }}</a></h4>
                                 <p>	{{ $recent_post->created_at->format('M d, Y') }}</p>
                             </div>
                         </div>
@@ -67,6 +67,17 @@
         <ul>
             @foreach($global_categories as $global_category)
                 <li><a href="{{ route('frontend.category.posts', $global_category->slug) }}">{{ $global_category->name }}</a></li>
+            @endforeach
+        </ul>
+    </aside>
+    <!-- End Single Widget -->
+
+    <!-- Start Single Widget -->
+    <aside class="widget category_widget">
+        <h3 class="widget-title">tags</h3>
+        <ul>
+            @foreach($global_tags as $global_tag)
+                <span style="background: #ebebeb none repeat  scroll 0 0; color: #333; display: inline-block; font-size: 12px; line-height: 20px; margin: 5px 5px 0 0; padding: 5px 15px; text-transform: capitalize;"><a href="{{ route('frontend.tag.posts', $global_tag->slug) }}">{{ $global_tag->name }} ({{ $global_tag->posts_count }})</a></span>
             @endforeach
         </ul>
     </aside>

@@ -1,24 +1,16 @@
 <?php
 
 namespace App\Models;
+
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Post extends Model
 {
-    use HasFactory ,Sluggable , SearchableTrait;
+    use Sluggable, SearchableTrait;
 
     protected $guarded = [];
-
-    protected $searchable = [
-        'columns'   => [
-            'posts.title'       => 10,
-            'posts.description' => 10,
-        ],
-    ];
-
 
     public function sluggable()
     {
@@ -29,7 +21,12 @@ class Post extends Model
         ];
     }
 
-
+    protected $searchable = [
+        'columns'   => [
+            'posts.title'       => 10,
+            'posts.description' => 10,
+        ],
+    ];
 
     public function scopeActive($query)
     {
@@ -44,6 +41,11 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'posts_tags');
     }
 
     public function user()
@@ -70,6 +72,7 @@ class Post extends Model
     {
         return $this->status == 1 ? 'Active' : 'Inactive';
     }
+
 
 
 }

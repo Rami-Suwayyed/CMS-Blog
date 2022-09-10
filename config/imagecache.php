@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
 
     /*
     |--------------------------------------------------------------------------
@@ -30,10 +30,10 @@ return [
     |
     */
 
-    'paths' => [
+    'paths' => array(
         public_path('upload'),
         public_path('images')
-    ],
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,11 +51,11 @@ return [
     |
     */
 
-    'templates' => [
+    'templates' => array(
         'small' => 'Intervention\Image\Templates\Small',
         'medium' => 'Intervention\Image\Templates\Medium',
         'large' => 'Intervention\Image\Templates\Large',
-    ],
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -68,4 +68,4 @@ return [
 
     'lifetime' => 43200,
 
-];
+);

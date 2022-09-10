@@ -11,6 +11,7 @@ class Statistics extends Component
 {
     public function render()
     {
+
         $all_users = User::whereHas('roles', function ($query) {
             $query->where('name', 'user');
         })->whereStatus(1)->count();

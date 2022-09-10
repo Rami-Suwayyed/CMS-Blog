@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Tag;
 use App\Notifications\NewCommentForAdminNotify;
 use App\Notifications\NewCommentForPostOwnerNotify;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class IndexController extends Controller
 
     public function index()
     {
-        $posts = Post::with(['media', 'user'])
+        $posts = Post::with(['media', 'user', 'tags'])
             ->whereHas('category', function ($query) {
                 $query->whereStatus(1);
             })
@@ -32,10 +33,9 @@ class IndexController extends Controller
 
     public function search(Request $request)
     {
-        return $request->keyword;
         $keyword = isset($request->keyword) && $request->keyword != '' ? $request->keyword : null;
 
-        $posts = Post::with(['media', 'user'])
+        $posts = Post::with(['media', 'user', 'tags'])
             ->whereHas('category', function ($query) {
                 $query->whereStatus(1);
             })
@@ -57,8 +57,28 @@ class IndexController extends Controller
         $category = Category::whereSlug($slug)->orWhere('id', $slug)->whereStatus(1)->first()->id;
 
         if ($category) {
-            $posts = Post::with(['media', 'user'])
+            $posts = Post::with(['media', 'user', 'tags'])
                 ->whereCategoryId($category)
+                ->post()
+                ->active()
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+
+            return view('frontend.index', compact('posts'));
+        }
+
+        return redirect()->route('frontend.index');
+    }
+
+    public function tag($slug)
+    {
+        $tag = Tag::whereSlug($slug)->orWhere('id', $slug)->first()->id;
+
+        if ($tag) {
+            $posts = Post::with(['media', 'user', 'tags'])
+                ->whereHas('tags', function ($query) use ($slug) {
+                    $query->where('slug', $slug);
+                })
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
@@ -76,7 +96,7 @@ class IndexController extends Controller
         $month = $exploded_date[0];
         $year = $exploded_date[1];
 
-        $posts = Post::with(['media', 'user'])
+        $posts = Post::with(['media', 'user', 'tags'])
             ->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
             ->post()
@@ -92,7 +112,7 @@ class IndexController extends Controller
         $user = User::whereUsername($username)->whereStatus(1)->first()->id;
 
         if ($user) {
-            $posts = Post::with(['media', 'user'])
+            $posts = Post::with(['media', 'user', 'tags'])
                 ->whereUserId($user)
                 ->post()
                 ->active()
@@ -107,7 +127,7 @@ class IndexController extends Controller
 
     public function post_show($slug)
     {
-        $post = Post::with(['category', 'media', 'user',
+        $post = Post::with(['category', 'media', 'user', 'tags',
             'approved_comments' => function($query) {
                 $query->orderBy('id', 'desc');
             }

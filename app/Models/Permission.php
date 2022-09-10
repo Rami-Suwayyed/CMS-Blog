@@ -47,4 +47,5 @@ class Permission extends EntrustPermission
             ->orderBy('ordering', 'asc')
             ->get();
     }
+
 }

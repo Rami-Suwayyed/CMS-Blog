@@ -18,5 +18,6 @@ class CategoriesTableSeeder extends Seeder
         Category::create(['name' => 'Natural', 'status' => 1]);
         Category::create(['name' => 'Flowers', 'status' => 1]);
         Category::create(['name' => 'Kitchen', 'status' => 0]);
+
     }
 }

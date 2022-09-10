@@ -3,13 +3,14 @@
 /public/storage
 /storage/*.key
 /vendor
+/tmp-files
+/.idea
 .env
 .env.backup
 .phpunit.result.cache
-docker-compose.override.yml
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/.idea
-/.vscode
+composer.lock
+package-lock.json
