@@ -6,14 +6,14 @@
             <div class="row">
                 <div class="col-lg-6 offset-md-3">
                     <div class="my__account__wrapper">
-                        <h3 class="account__title">Verify Your Email Address</h3>
+                        <h3 class="account__title">{{ __('Frontend/auth.verify_email') }}</h3>
 
 
-                        {{ __('Before proceeding, please check your email for a verification link.') }}
-                        {{ __('If you did not receive the email') }},
+                        {{ __('Frontend/auth.please_check_email') }}
+                        {{ __('Frontend/auth.if_did_not_receive_email') }},
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                             @csrf
-                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('Frontend/auth.request_another') }}</button>.
                         </form>
                     </div>
                 </div>

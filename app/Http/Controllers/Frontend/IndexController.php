@@ -26,29 +26,32 @@ class IndexController extends Controller
             ->whereHas('user', function ($query) {
                 $query->whereStatus(1);
             })
-            ->post()->active()->orderBy('id', 'desc')->paginate(5);
+            ->post()
+            ->active()
+            ->orderBy('id', 'desc')
+            ->paginate(5)
+            ->withQueryString();
 
         return view('frontend.index', compact('posts'));
     }
 
-    public function search(Request $request)
+    public function search()
     {
-        $keyword = isset($request->keyword) && $request->keyword != '' ? $request->keyword : null;
-
         $posts = Post::with(['media', 'user', 'tags'])
             ->whereHas('category', function ($query) {
                 $query->whereStatus(1);
             })
             ->whereHas('user', function ($query) {
                 $query->whereStatus(1);
-            });
-
-        if ($keyword != null) {
-            $posts = $posts->search($keyword, null, true);
-        }
-
-        $posts = $posts->post()->active()->orderBy('id', 'desc')->paginate(5);
-
+            })
+            ->when(request('keyword') != '', function ($query) {
+                $query->search(request('keyword'), null, true);
+            })
+            ->post()
+            ->active()
+            ->orderBy('id', 'desc')
+            ->paginate(5)
+            ->withQueryString();
         return view('frontend.index', compact('posts'));
     }
 
@@ -62,8 +65,8 @@ class IndexController extends Controller
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
-                ->paginate(5);
-
+                ->paginate(5)
+                ->withQueryString();
             return view('frontend.index', compact('posts'));
         }
 
@@ -82,8 +85,8 @@ class IndexController extends Controller
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
-                ->paginate(5);
-
+                ->paginate(5)
+                ->withQueryString();
             return view('frontend.index', compact('posts'));
         }
 
@@ -102,51 +105,47 @@ class IndexController extends Controller
             ->post()
             ->active()
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(5)
+            ->withQueryString();
         return view('frontend.index', compact('posts'));
-
     }
 
     public function author($username)
     {
         $user = User::whereUsername($username)->whereStatus(1)->first()->id;
-
         if ($user) {
             $posts = Post::with(['media', 'user', 'tags'])
                 ->whereUserId($user)
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
-                ->paginate(5);
-
+                ->paginate(5)
+                ->withQueryString();
             return view('frontend.index', compact('posts'));
         }
-
         return redirect()->route('frontend.index');
     }
 
     public function post_show($slug)
     {
-        $post = Post::with(['category', 'media', 'user', 'tags',
-            'approved_comments' => function($query) {
+        $post = Post::query()
+            ->with(['category', 'media', 'user', 'tags',
+                'approved_comments' => function($query) {
                 $query->orderBy('id', 'desc');
             }
-        ]);
-
-        $post = $post->whereHas('category', function ($query) {
+            ])
+            ->whereHas('category', function ($query) {
                 $query->whereStatus(1);
             })
             ->whereHas('user', function ($query) {
                 $query->whereStatus(1);
-            });
-
-        $post = $post->whereSlug($slug);
-        $post = $post->active()->first();
+            })
+            ->whereSlug($slug)
+            ->active()
+            ->first();
 
         if($post) {
-
             $blade = $post->post_type == 'post' ? 'post' : 'page';
-
             return view('frontend.' . $blade, compact('post'));
         } else {
             return redirect()->route('frontend.index');
@@ -191,13 +190,13 @@ class IndexController extends Controller
             });
 
             return redirect()->back()->with([
-                'message' => 'Comment added successfully',
+                'message' => __('Frontend/general.added_successfully'),
                 'alert-type' => 'success'
             ]);
         }
 
         return redirect()->back()->with([
-            'message' => 'Something was wrong',
+            'message' => __('Frontend/general.something_was_wrong'),
             'alert-type' => 'danger'
         ]);
 
@@ -230,7 +229,7 @@ class IndexController extends Controller
         Contact::create($data);
 
         return redirect()->back()->with([
-            'message' => 'Message sent successfully',
+            'message' => __('Frontend/general.sent_successfully'),
             'alert-type' => 'success'
         ]);
 

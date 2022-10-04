@@ -3,7 +3,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Contact us</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/contact_us.contact_us') }}</h6>
         </div>
 
         @include('backend.contact_us.filter.filter')
@@ -12,11 +12,11 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>From</th>
-                    <th>title</th>
-                    <th>Status</th>
-                    <th>Created at</th>
-                    <th class="text-center" style="width: 30px;">Actions</th>
+                    <th>{{ __('Backend/contact_us.from') }}</th>
+                    <th>{{ __('Backend/contact_us.title') }}</th>
+                    <th>{{ __('Backend/contact_us.status') }}</th>
+                    <th>{{ __('Backend/contact_us.created_at') }}</th>
+                    <th class="text-center" style="width: 30px;">{{ __('Backend/contact_us.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">No messages found</td>
+                        <td colspan="5" class="text-center">{{ __('Backend/contact_us.no_messages_found') }}</td>
                     </tr>
                 @endforelse
                 </tbody>
@@ -47,7 +47,7 @@
                 <tr>
                     <th colspan="5">
                         <div class="float-right">
-                            {!! $messages->appends(request()->input())->links() !!}
+                            {!! $messages->links() !!}
                         </div>
                     </th>
                 </tr>

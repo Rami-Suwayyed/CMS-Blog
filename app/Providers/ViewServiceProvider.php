@@ -93,9 +93,11 @@ class ViewServiceProvider extends ServiceProvider
                 }
                 $global_archives = Cache::get('global_archives');
 
+                $dir_lang = config('app.locale') == 'ar' ? 'rtl' : 'ltr';
 
 
                 $view->with([
+                    'dir_lang' => $dir_lang,
                     'recent_posts' => $recent_posts,
                     'recent_comments' => $recent_comments,
                     'global_categories' => $global_categories,

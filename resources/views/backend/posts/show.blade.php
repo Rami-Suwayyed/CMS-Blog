@@ -3,13 +3,13 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Post ({{ $post->title }})</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/posts.post') }} ({{ $post->title }})</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-home"></i>
                     </span>
-                    <span class="text">Posts</span>
+                    <span class="text">{{ __('Backend/posts.posts') }}</span>
                 </a>
             </div>
         </div>
@@ -17,22 +17,22 @@
             <table class="table table-hover">
                 <tbody>
                     <tr>
-                        <td colspan="4"><a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a></td>
+                        <td colspan="4"><a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title() }}</a></td>
                     </tr>
                     <tr>
-                        <th>Comments</th>
-                        <td>{{ $post->comment_able == 1 ? $post->comments->count() : 'Disallow' }}</td>
-                        <th>Status</th>
+                        <th>{{ __('Backend/posts.comments') }}</th>
+                        <td>{{ $post->comment_able == 1 ? $post->comments->count() : __('Backend/posts.disallow') }}</td>
+                        <th>{{ __('Backend/posts.status') }}</th>
                         <td>{{ $post->status() }}</td>
                     </tr>
                     <tr>
-                        <th>Category</th>
-                        <td>{{ $post->category->name }}</td>
-                        <th>Author</th>
+                        <th>{{ __('Backend/posts.category') }}</th>
+                        <td>{{ $post->category->name() }}</td>
+                        <th>{{ __('Backend/posts.author') }}</th>
                         <td>{{ $post->user->name }}</td>
                     </tr>
                     <tr>
-                        <th>Created date</th>
+                        <th>{{ __('Backend/posts.created_date') }}</th>
                         <td>{{ $post->created_at->format('d-m-Y h:i a') }}</td>
                         <th></th>
                         <td></td>
@@ -57,18 +57,18 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Comments</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/posts.comments') }}</h6>
         </div>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Author</th>
-                    <th width="40%">comment</th>
-                    <th>Status</th>
-                    <th>Created at</th>
-                    <th class="text-center" style="width: 30px;">Actions</th>
+                    <th>{{ __('Backend/posts.image') }}</th>
+                    <th>{{ __('Backend/posts.author') }}</th>
+                    <th width="40%">{{ __('Backend/posts.comment') }}</th>
+                    <th>{{ __('Backend/posts.status') }}</th>
+                    <th>{{ __('Backend/posts.created_at') }}</th>
+                    <th class="text-center" style="width: 30px;">{{ __('Backend/posts.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,7 +92,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">No comments found</td>
+                        <td colspan="7" class="text-center">{{ __('Backend/posts.no_comments_found') }}</td>
                     </tr>
                 @endforelse
                 </tbody>

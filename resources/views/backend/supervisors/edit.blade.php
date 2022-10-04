@@ -6,121 +6,138 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Edit supervisor ({{ $user->name }})</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/supervisors.edit_supervisor') }}
+                ({{ $user->name }})</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.supervisors.index') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-home"></i>
                     </span>
-                    <span class="text">Users</span>
+                    <span class="text">{{  __('Backend/supervisors.supervisors') }}</span>
                 </a>
             </div>
         </div>
         <div class="card-body">
 
-            {!! Form::model($user, ['route' => ['admin.supervisors.update', $user->id], 'method' => 'patch', 'files' => true]) !!}
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Name') !!}
-                        {!! Form::text('name', old('name', $user->name), ['class' => 'form-control']) !!}
-                        @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+            <form action="{{ route('admin.supervisors.update', $user->id) }}" method="post"
+                  enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="name">{{ __('Backend/supervisors.name') }}</label>
+                            <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control">
+                            @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
                     </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        {!! Form::label('username', 'Username') !!}
-                        {!! Form::text('username', old('username', $user->username), ['class' => 'form-control']) !!}
-                        @error('username')<span class="text-danger">{{ $message }}</span>@enderror
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="username">{{ __('Backend/supervisors.username') }}</label>
+                            <input type="text" name="username" value="{{ old('username', $user->username) }}"
+                                   class="form-control">
+                            @error('username')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
                     </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        {!! Form::label('email', 'Email') !!}
-                        {!! Form::text('email', old('email', $user->email), ['class' => 'form-control']) !!}
-                        @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="email">{{ __('Backend/supervisors.email') }}</label>
+                            <input type="text" name="email" value="{{ old('email', $user->email) }}"
+                                   class="form-control">
+                            @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
                     </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        {!! Form::label('mobile', 'Mobile') !!}
-                        {!! Form::text('mobile', old('mobile', $user->mobile), ['class' => 'form-control']) !!}
-                        @error('mobile')<span class="text-danger">{{ $message }}</span>@enderror
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="mobile">{{ __('Backend/supervisors.mobile') }}</label>
+                            <input type="text" name="mobile" value="{{ old('mobile', $user->mobile) }}"
+                                   class="form-control">
+                            @error('mobile')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
                     </div>
                 </div>
 
-            </div>
-
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-group">
-                        {!! Form::label('password', 'Password') !!}
-                        {!! Form::password('password', ['class' => 'form-control']) !!}
-                        @error('password')<span class="text-danger">{{ $message }}</span>@enderror
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="password">{{ __('Backend/supervisors.password') }}</label>
+                            <input type="password" name="password" class="form-control">
+                            @error('password')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
                     </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        {!! Form::label('status', 'status') !!}
-                        {!! Form::select('status', ['' => '---', '1' => 'Active', '0' => 'Inactive', ],old('status', $user->status), ['class' => 'form-control']) !!}
+                    <div class="col-3">
+                        <label for="status">{{ __('Backend/supervisors.status') }}</label>
+                        <select name="status" class="form-control">
+                            <option
+                                value="1" {{ old('status', $user->status) == '1' ? 'selected' : '' }}>{{ __('Backend/supervisors.active') }}</option>
+                            <option
+                                value="0" {{ old('status', $user->status) == '0' ? 'selected' : '' }}>{{ __('Backend/supervisors.inactive') }}</option>
+                        </select>
                         @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        {!! Form::label('receive_email', 'Receive email') !!}
-                        {!! Form::select('receive_email', ['' => '---', '1' => 'Yes', '0' => 'No', ],old('receive_email', $user->receive_email), ['class' => 'form-control']) !!}
+                    <div class="col-6">
+                        <label for="receive_email">{{ __('Backend/supervisors.receive_email') }}</label>
+                        <select name="receive_email" class="form-control">
+                            <option
+                                value="1" {{ old('receive_email', $user->receive_email) == '1' ? 'selected' : '' }}>{{ __('Backend/supervisors.yes') }}</option>
+                            <option
+                                value="0" {{ old('receive_email', $user->receive_email) == '0' ? 'selected' : '' }}>{{ __('Backend/supervisors.no') }}</option>
+                        </select>
                         @error('receive_email')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        {!! Form::label('bio', 'Bio') !!}
-                        {!! Form::textarea('bio', old('bio', $user->bio), ['class' => 'form-control']) !!}
-                        @error('bio')<span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        {!! Form::label('permissions', 'permissions') !!}
-                        {!! Form::select('permissions[]', [] + $permissions->toArray(), old('permissions', $userPermissions), ['class' => 'form-control select-multiple-tags', 'multiple' => 'multiple']) !!}
-                        @error('permissions')<span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row pt-4">
-                @if ($user->user_image != '')
-                    <div class="col-12 text-center">
-                        <div id="imgArea">
-                            <img src="{{ asset('assets/users/' . $user->user_image) }}" width="200" height="200">
-                            <button class="btn btn-danger removeImage">Remove Image</button>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="bio">{{ __('Backend/supervisors.bio') }}</label>
+                            <textarea name="bio" class="form-control">{{ old('bio', $user->bio) }}</textarea>
+                            @error('bio')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
-                @endif
-                <div class="col-12">
-                    {!! Form::label('User Image', 'user_image') !!}
-                    <br>
-                    <div class="file-loading">
-                        {!! Form::file('user_image', ['id' => 'user-image', 'class' => 'file-input-overview']) !!}
-                        <span class="form-text text-muted">Image width should be 300px x 300px</span>
-                        @error('user_image')<span class="text-danger">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="permissions">{{ __('Backend/supervisors.permissions') }}</label>
+                            <select name="permissions[]" class="form-control select-multiple-tags" multiple="multiple">
+                                @foreach($permissions as $permission)
+                                    <option
+                                        value="{{ $permission->id }}" {{ in_array($permission->id, old('permissions[]', $userPermissions)) ? 'selected' : '' }}>{{ $permission->display_name() }}</option>
+                                @endforeach
+                            </select>
+                            @error('permissions')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group pt-4">
-                {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
-            </div>
-            {!! Form::close() !!}
+
+                <div class="row pt-4">
+                    @if ($user->user_image != '')
+                        <div class="col-12 text-center">
+                            <div id="imgArea">
+                                <img src="{{ asset('assets/users/' . $user->user_image) }}" width="200" height="200">
+                                <button
+                                    class="btn btn-danger removeImage">{{  __('Backend/supervisors.remove_image') }}</button>
+                            </div>
+                        </div>
+                    @endif
+                    <div class="col-12">
+                        <label for="user_image">{{ __('Backend/supervisors.image') }}</label>
+                        <br>
+                        <div class="file-loading">
+                            <input type="file" name="user_image" id="user-image" class="file-input-overview">
+                            <span class="form-text text-muted">{{  __('Backend/supervisors.image_hint') }}</span>
+                            @error('user_image')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group pt-4">
+                    <button type="submit" class="btn btn-primary">{{ __('Backend/supervisors.update') }}</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -132,7 +149,7 @@
             $('.select-multiple-tags').select2({
                 minimumResultsForSearch: Infinity,
                 tags: true,
-                closeOnSelect:false
+                closeOnSelect: false
             });
 
             $('#user-image').fileinput({
@@ -146,7 +163,10 @@
             });
 
             $('.removeImage').click(function () {
-                $.post('{{ route('admin.supervisors.remove_image') }}', { user_id: '{{ $user->id }}', _token: '{{ csrf_token() }}' }, function (data) {
+                $.post('{{ route('admin.supervisors.remove_image') }}', {
+                    user_id: '{{ $user->id }}',
+                    _token: '{{ csrf_token() }}'
+                }, function (data) {
                     if (data == 'true') {
                         window.location.href = window.location;
                     }

@@ -3,13 +3,13 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Supervisors</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/supervisors.supervisors') }}</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.supervisors.create') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-plus"></i>
                     </span>
-                    <span class="text">Add new supervisor</span>
+                    <span class="text">{{ __('Backend/supervisors.add_new_supervisor') }}</span>
                 </a>
             </div>
         </div>
@@ -20,12 +20,12 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Email & Mobile</th>
-                    <th>Status</th>
-                    <th>Created at</th>
-                    <th class="text-center" style="width: 30px;">Actions</th>
+                    <th>{{ __('Backend/supervisors.image') }}</th>
+                    <th>{{ __('Backend/supervisors.name') }}</th>
+                    <th>{{ __('Backend/supervisors.email_mobile') }}</th>
+                    <th>{{ __('Backend/supervisors.status') }}</th>
+                    <th>{{ __('Backend/supervisors.created_at') }}</th>
+                    <th class="text-center" style="width: 30px;">{{ __('Backend/supervisors.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,7 +61,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">No supervisors found</td>
+                        <td colspan="6" class="text-center">{{ __('Backend/supervisors.no_supervisors_found') }}</td>
                     </tr>
                 @endforelse
                 </tbody>
@@ -69,7 +69,7 @@
                 <tr>
                     <th colspan="6">
                         <div class="float-right">
-                            {!! $users->appends(request()->input())->links() !!}
+                            {!! $users->links() !!}
                         </div>
                     </th>
                 </tr>

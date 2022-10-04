@@ -3,13 +3,13 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Tags</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/post_tags.tags') }}</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.post_tags.create') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-plus"></i>
                     </span>
-                    <span class="text">Add new tag</span>
+                    <span class="text">{{ __('Backend/post_tags.add_new_tag') }}</span>
                 </a>
             </div>
         </div>
@@ -20,16 +20,16 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Posts count</th>
-                    <th>Created at</th>
-                    <th class="text-center" style="width: 30px;">Actions</th>
+                    <th>{{ __('Backend/post_tags.name') }}</th>
+                    <th>{{ __('Backend/post_tags.posts_count') }}</th>
+                    <th>{{ __('Backend/post_tags.created_at') }}</th>
+                    <th class="text-center" style="width: 30px;">{{ __('Backend/post_tags.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($tags as $tag)
                     <tr>
-                        <td>{{ $tag->name }}</td>
+                        <td>{{ $tag->name() }}</td>
                         <td><a href="{{ route('admin.posts.index', ['tag_id' => $tag->id]) }}">{{ $tag->posts_count }}</a></td>
                         <td>{{ $tag->created_at->format('d-m-Y h:i a') }}</td>
                         <td>
@@ -45,7 +45,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">No tags found</td>
+                        <td colspan="5" class="text-center">{{ __('Backend/post_tags.no_tags_found') }}</td>
                     </tr>
                 @endforelse
                 </tbody>
@@ -53,7 +53,7 @@
                 <tr>
                     <th colspan="5">
                         <div class="float-right">
-                            {!! $tags->appends(request()->input())->links() !!}
+                            {!! $tags->links() !!}
                         </div>
                     </th>
                 </tr>

@@ -28,7 +28,10 @@ class UsersController extends Controller
     public function index()
     {
         $posts = auth()->user()->posts()->with(['media', 'category', 'user'])
-            ->withCount('comments')->orderBy('id', 'desc')->paginate(10);
+            ->withCount('comments')
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         return view('frontend.users.dashboard', compact('posts'));
     }
 
@@ -76,12 +79,12 @@ class UsersController extends Controller
 
         if ($update) {
             return redirect()->back()->with([
-                'message' => 'Information updated successfully',
+                'message' => __('Frontend/general.updated_successfully'),
                 'alert-type' => 'success',
             ]);
         } else {
             return redirect()->back()->with([
-                'message' => 'Something was wrong',
+                'message' => __('Frontend/general.something_was_wrong'),
                 'alert-type' => 'danger',
             ]);
         }
@@ -105,19 +108,19 @@ class UsersController extends Controller
 
             if ($update) {
                 return redirect()->back()->with([
-                    'message' => 'Password updated successfully',
+                    'message' => __('Frontend/general.updated_successfully'),
                     'alert-type' => 'success',
                 ]);
             } else {
                 return redirect()->back()->with([
-                    'message' => 'Something was wrong',
+                    'message' => __('Frontend/general.something_was_wrong'),
                     'alert-type' => 'danger',
                 ]);
             }
 
         } else {
             return redirect()->back()->with([
-                'message' => 'Something was wrong',
+                'message' => __('Frontend/general.something_was_wrong'),
                 'alert-type' => 'danger',
             ]);
         }
@@ -125,8 +128,8 @@ class UsersController extends Controller
 
     public function create_post()
     {
-        $tags = Tag::pluck('name', 'id');
-        $categories = Category::whereStatus(1)->pluck('name', 'id');
+        $tags = Tag::select('id', 'name', 'name_en')->get();
+        $categories = Category::whereStatus(1)->select('id', 'name', 'name_en')->get();
         return view('frontend.users.create_post', compact('categories', 'tags'));
     }
 
@@ -135,6 +138,8 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
             'description'   => 'required|min:50',
+            'title_en'      => 'required',
+            'description_en'=> 'required|min:50',
             'status'        => 'required',
             'comment_able'  => 'required',
             'category_id'   => 'required',
@@ -146,6 +151,8 @@ class UsersController extends Controller
 
         $data['title']              = $request->title;
         $data['description']        = Purify::clean($request->description);
+        $data['title_en']           = $request->title_en;
+        $data['description_en']     = Purify::clean($request->description_en);
         $data['status']             = $request->status;
         $data['comment_able']       = $request->comment_able;
         $data['category_id']        = $request->category_id;
@@ -192,7 +199,7 @@ class UsersController extends Controller
         }
 
         return redirect()->back()->with([
-            'message' => 'Post created successfully',
+            'message' => __('Frontend/general.created_successfully'),
             'alert-type' => 'success',
         ]);
 
@@ -204,8 +211,8 @@ class UsersController extends Controller
         $post = Post::whereSlug($post_id)->orWhere('id', $post_id)->whereUserId(auth()->id())->first();
 
         if ($post) {
-            $tags = Tag::pluck('name', 'id');
-            $categories = Category::whereStatus(1)->pluck('name', 'id');
+            $tags = Tag::select('id', 'name', 'name_en')->get();
+            $categories = Category::whereStatus(1)->select('id', 'name', 'name_en')->get();
             return view('frontend.users.edit_post', compact('post', 'categories', 'tags'));
         }
 
@@ -217,6 +224,8 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
             'description'   => 'required|min:50',
+            'title_en'      => 'required',
+            'description_en'=> 'required|min:50',
             'status'        => 'required',
             'comment_able'  => 'required',
             'category_id'   => 'required',
@@ -229,7 +238,11 @@ class UsersController extends Controller
 
         if ($post) {
             $data['title']              = $request->title;
+            $data['slug']               = null;
             $data['description']        = Purify::clean($request->description);
+            $data['title_en']           = $request->title_en;
+            $data['slug_en']            = null;
+            $data['description_en']     = Purify::clean($request->description_en);
             $data['status']             = $request->status;
             $data['comment_able']       = $request->comment_able;
             $data['category_id']        = $request->category_id;
@@ -271,13 +284,13 @@ class UsersController extends Controller
             }
 
             return redirect()->back()->with([
-                'message' => 'Post updated successfully',
+                'message' => __('Frontend/general.updated_successfully'),
                 'alert-type' => 'success',
             ]);
 
         }
         return redirect()->back()->with([
-            'message' => 'Something was wrong',
+            'message' => __('Frontend/general.something_was_wrong'),
             'alert-type' => 'danger',
         ]);
 
@@ -298,13 +311,13 @@ class UsersController extends Controller
             $post->delete();
 
             return redirect()->back()->with([
-                'message' => 'Post deleted successfully',
+                'message' => __('Frontend/general.deleted_successfully'),
                 'alert-type' => 'success',
             ]);
         }
 
         return redirect()->back()->with([
-            'message' => 'Something was wrong',
+            'message' => __('Frontend/general.something_was_wrong'),
             'alert-type' => 'danger',
         ]);
 
@@ -350,7 +363,7 @@ class UsersController extends Controller
             return view('frontend.users.edit_comment', compact('comment'));
         } else {
             return redirect()->back()->with([
-                'message' => 'Something was wrong',
+                'message' => __('Frontend/general.something_was_wrong'),
                 'alert-type' => 'danger',
             ]);
         }
@@ -388,13 +401,13 @@ class UsersController extends Controller
             }
 
             return redirect()->back()->with([
-                'message' => 'Comment updated successfully',
+                'message' => __('Frontend/general.updated_successfully'),
                 'alert-type' => 'success',
             ]);
 
         } else {
             return redirect()->back()->with([
-                'message' => 'Something was wrong',
+                'message' => __('Frontend/general.something_was_wrong'),
                 'alert-type' => 'danger',
             ]);
         }
@@ -413,13 +426,13 @@ class UsersController extends Controller
             Cache::forget('recent_comments');
 
             return redirect()->back()->with([
-                'message' => 'Comment deleted successfully',
+                'message' => __('Frontend/general.deleted_successfully'),
                 'alert-type' => 'success',
             ]);
 
         } else {
             return redirect()->back()->with([
-                'message' => 'Something was wrong',
+                'message' => __('Frontend/general.something_was_wrong'),
                 'alert-type' => 'danger',
             ]);
         }

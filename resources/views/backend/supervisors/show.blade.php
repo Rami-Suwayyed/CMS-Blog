@@ -3,13 +3,13 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">User ({{ $user->name }})</h6>
+            <h6 class="m-0 font-weight-bold text-primary">({{ $user->name }})</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-home"></i>
                     </span>
-                    <span class="text">Users</span>
+                    <span class="text">{{ __('Backend/supervisors.supervisors') }}</span>
                 </a>
             </div>
         </div>
@@ -26,22 +26,22 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Name</th>
+                        <th>{{ __('Backend/supervisors.name') }}</th>
                         <td>{{ $user->name }} ({{ $user->username }})</td>
-                        <th>Email</th>
+                        <th>{{ __('Backend/supervisors.email') }}</th>
                         <td>{{ $user->email }}</td>
                     </tr>
                     <tr>
-                        <th>Mobile</th>
+                        <th>{{ __('Backend/supervisors.mobile') }}</th>
                         <td>{{ $user->mobile }}</td>
-                        <th>Status</th>
+                        <th>{{ __('Backend/supervisors.status') }}</th>
                         <td>{{ $user->status() }}</td>
                     </tr>
                     <tr>
-                        <th>Created date</th>
+                        <th>{{ __('Backend/supervisors.created_at') }}</th>
                         <td>{{ $user->created_at->format('d-m-Y h:i a') }}</td>
-                        <th>Posts Count</th>
-                        <td>{{ $user->posts_count }}</td>
+                        <th></th>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>

@@ -6,59 +6,85 @@
 @section('content')
 
     <div class="col-lg-9 col-12">
-        <h3>Edit Post ({{ $post->title }})</h3>
-        {!! Form::model($post, ['route' => ['users.post.update', $post->id], 'method' => 'put', 'files' => true]) !!}
-        <div class="form-group">
-            {!! Form::label('title', 'Title') !!}
-            {!! Form::text('title', old('title', $post->title), ['class' => 'form-control']) !!}
-            @error('title')<span class="text-danger">{{ $message }}</span>@enderror
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('description', 'Description') !!}
-            {!! Form::textarea('description', old('description', $post->description), ['class' => 'form-control summernote']) !!}
-            @error('description')<span class="text-danger">{{ $message }}</span>@enderror
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('tags', 'Tags') !!}
-            <button type="button" class="btn btn-primary btn-xs" id="select_btn_tag">Select all</button>
-            <button type="button" class="btn btn-primary btn-xs" id="deselect_btn_tag">Deselect all</button>
-            {!! Form::select('tags[]', $tags->toArray() ,old('tags', $post->tags), ['class' => 'form-control selects', 'multiple' => 'multiple' , 'id' => 'select_all_tags']) !!}
-            @error('tags')<span class="text-danger">{{ $message }}</span>@enderror
-        </div>
-
-        <div class="row">
-            <div class="col-4">
-                {!! Form::label('category_id', 'category_id') !!}
-                {!! Form::select('category_id', ['' => '---'] + $categories->toArray(), old('category_id', $post->category_id), ['class' => 'form-control']) !!}
-                @error('category_id')<span class="text-danger">{{ $message }}</span>@enderror
+        <h3>{{ __('Frontend/general.edit_post', ['title' => $post->title()]) }}</h3>
+        <form action="{{ route('users.post.update', $post->id) }}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="title">{{ __('Frontend/general.title') }}</label>
+                <input type="text" name="title" value="{{ old('title', $post->title) }}" class="form-control">
+                @error('title')<span class="text-danger">{{ $message }}</span>@enderror
             </div>
-            <div class="col-4">
-                {!! Form::label('comment_able', 'comment_able') !!}
-                {!! Form::select('comment_able', ['1' => 'Yes', '0' => 'No'], old('comment_able', $post->comment_able), ['class' => 'form-control']) !!}
-                @error('comment_able')<span class="text-danger">{{ $message }}</span>@enderror
+            <div class="form-group">
+                <label for="title_en">{{ __('Frontend/general.title_en') }}</label>
+                <input type="text" name="title_en" value="{{ old('title_en', $post->title_en) }}" class="form-control">
+                @error('title_en')<span class="text-danger">{{ $message }}</span>@enderror
             </div>
-            <div class="col-4">
-                {!! Form::label('status', 'status') !!}
-                {!! Form::select('status', ['1' => 'Active', '0' => 'Inactive'], old('status', $post->status), ['class' => 'form-control']) !!}
-                @error('status')<span class="text-danger">{{ $message }}</span>@enderror
-            </div>
-        </div>
 
-        <div class="row pt-4">
-            <div class="col-12">
-                <div class="file-loading">
-                    {!! Form::file('images[]', ['id' => 'post-images', 'multiple' => 'multiple']) !!}
+            <div class="form-group">
+                <label for="description">{{ __('Frontend/general.description') }}</label>
+                <textarea name="description" class="form-control summernote">{{ old('description', $post->description) }}</textarea>
+                @error('description')<span class="text-danger">{{ $message }}</span>@enderror
+            </div>
+            <div class="form-group">
+                <label for="description_en">{{ __('Frontend/general.description_en') }}</label>
+                <textarea name="description_en" class="form-control summernote">{{ old('description_en', $post->description_en) }}</textarea>
+                @error('description_en')<span class="text-danger">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="form-group">
+                <label for="tags">{{ __('Frontend/general.tags') }}</label>
+                <button type="button" class="btn btn-primary btn-xs" id="select_btn_tag">{{ __('Frontend/general.select_all') }}</button>
+                <button type="button" class="btn btn-primary btn-xs" id="deselect_btn_tag">{{ __('Frontend/general.deselect_all') }}</button>
+                <select name="tags[]" id="select_all_tags" class="form-control selects" multiple="multiple">
+                    @foreach($tags->toArray() as $tag)
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags[]', $post->tags)) ? 'selected' : '' }}>{{ $tag->name() }}</option>
+                    @endforeach
+                </select>
+                @error('tags')<span class="text-danger">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label for="category_id">{{ __('Frontend/general.category_id') }}</label>
+                    <select name="category_id" class="form-control">
+                        @foreach($categories->toArray() as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name() }}</option>
+                        @endforeach
+                    </select>
+                    @error('category_id')<span class="text-danger">{{ $message }}</span>@enderror
+                </div>
+                <div class="col-4">
+                    <label for="comment_able">{{ __('Frontend/general.comment_able') }}</label>
+                    <select name="comment_able" class="form-control">
+                        <option value="1" {{ old('comment_able', $post->comment_able) == '1' ? 'selected' : '' }}>{{ __('Frontend/general.yes') }}</option>
+                        <option value="0" {{ old('comment_able', $post->comment_able) == '0' ? 'selected' : '' }}>{{ __('Frontend/general.no') }}</option>
+                    </select>
+                    @error('comment_able')<span class="text-danger">{{ $message }}</span>@enderror
+                </div>
+                <div class="col-4">
+                    <label for="status">{{ __('Frontend/general.status') }}</label>
+                    <select name="status" class="form-control">
+                        <option value="1" {{ old('status', $post->status) == '1' ? 'selected' : '' }}>{{ __('Frontend/general.active') }}</option>
+                        <option value="0" {{ old('status', $post->status) == '0' ? 'selected' : '' }}>{{ __('Frontend/general.inactive') }}</option>
+                    </select>
+                    @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>
-        </div>
 
-        <div class="form-group pt-4">
-            {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-        </div>
-
-        {!! Form::close() !!}
+            <div class="row pt-4">
+                <div class="col-12">
+                    <div class="file-loading">
+                        <input type="file" name="images[]" id="post-images" multiple="multiple">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group pt-4">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Frontend/general.submit') }}
+                </button>
+            </div>
+        </form>
     </div>
     <div class="col-lg-3 col-12 md-mt-40 sm-mt-40">
         @include('partial.frontend.users.sidebar')

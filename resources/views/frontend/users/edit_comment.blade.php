@@ -2,53 +2,59 @@
 @section('content')
 
     <div class="col-lg-9 col-12">
-        <h3>Edit Comment on: ({{ $comment->post->title }})</h3>
-        {!! Form::model($comment, ['route' => ['users.comment.update', $comment->id], 'method' => 'put']) !!}
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    {!! Form::label('name', 'Name') !!}
-                    {!! Form::text('name', old('name', $comment->name), ['class' => 'form-control']) !!}
-                    @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+        <h3>{{ __('Frontend/general.edit_comment_on', ['title' => $comment->post->title()]) }}</h3>
+        <form action="{{ route('users.comment.update', $comment->id) }}" method="post">
+            @csrf
+            @method('PUT')
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="name">{{ __('Frontend/general.name') }}</label>
+                        <input type="text" name="name" value="{{ old('name', $comment->name) }}" class="form-control">
+                        @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="email">{{ __('Frontend/general.email') }}</label>
+                        <input type="text" name="email" value="{{ old('email', $comment->email) }}" class="form-control">
+                        @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="url">{{ __('Frontend/general.url') }}</label>
+                        <input type="text" name="url" value="{{ old('url', $comment->url) }}" class="form-control">
+                        @error('url')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+                </div>
+                <div class="col-3">
+                    <label for="status">{{ __('Frontend/general.status') }}</label>
+                    <select name="status" class="form-control">
+                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>{{ __('Frontend/general.active') }}</option>
+                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>{{ __('Frontend/general.inactive') }}</option>
+                    </select>
+                    @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>
-            <div class="col-3">
-                <div class="form-group">
-                    {!! Form::label('email', 'Email') !!}
-                    {!! Form::text('email', old('email', $comment->email), ['class' => 'form-control']) !!}
-                    @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+
+            <div class="row">
+                <div class="col-12">
+                    <label for="comment">{{ __('Frontend/general.comment') }}</label>
+                    <textarea name="comment" class="form-control">{{ old('comment', $comment->comment) }}</textarea>
+                    @error('comment')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>
-            <div class="col-3">
-                <div class="form-group">
-                    {!! Form::label('url', 'Website') !!}
-                    {!! Form::text('url', old('url', $comment->url), ['class' => 'form-control']) !!}
-                    @error('url')<span class="text-danger">{{ $message }}</span>@enderror
-                </div>
-            </div>
-            <div class="col-3">
-                {!! Form::label('status', 'status') !!}
-                {!! Form::select('status', ['1' => 'Active', '0' => 'Inactive'], old('status', $comment->status), ['class' => 'form-control']) !!}
-                @error('status')<span class="text-danger">{{ $message }}</span>@enderror
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12">
-                {!! Form::label('comment', 'comment') !!}
-                {!! Form::textarea('comment', old('comment', $comment->comment), ['class' => 'form-control']) !!}
-                @error('comment')<span class="text-danger">{{ $message }}</span>@enderror
+            <div class="form-group pt-4">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Frontend/general.submit') }}
+                </button>
             </div>
-        </div>
-
-        <div class="form-group pt-4">
-            {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-        </div>
-
-        {!! Form::close() !!}
+        </form>
     </div>
     <div class="col-lg-3 col-12 md-mt-40 sm-mt-40">
-                    @include('partial.frontend.users.sidebar')
-                </div>
+        @include('partial.frontend.users.sidebar')
+    </div>
 
 @endsection

@@ -6,31 +6,32 @@
             <div class="row">
                 <div class="col-lg-6 offset-md-3">
                     <div class="my__account__wrapper">
-                        <h3 class="account__title">Reset Password</h3>
-                        {!! Form::open(['route' => 'password.update', 'method' => 'post']) !!}
-                        <input type="hidden" name="token" value="{{ $token }}">
-                        <div class="account__form">
-                            <div class="input__box">
-                                {!! Form::label('email', 'Email *') !!}
-                                {!! Form::email('email', old('email')) !!}
-                                @error('email')<span class="text-danger">{{ $message }}</span>@enderror
-                            </div>
-                            <div class="input__box">
-                                {!! Form::label('password', 'Password *') !!}
-                                {!! Form::password('password') !!}
-                                @error('password')<span class="text-danger">{{ $message }}</span>@enderror
-                            </div>
-                            <div class="input__box">
-                                {!! Form::label('password_confirmation', 'Re-Password *') !!}
-                                {!! Form::password('password_confirmation') !!}
-                                @error('password_confirmation')<span class="text-danger">{{ $message }}</span>@enderror
-                            </div>
+                        <h3 class="account__title">{{ __('Frontend/auth.reset_password') }}</h3>
+                        <form action="{{ route('password.update') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="token" value="{{ $token }}">
+                            <div class="account__form">
+                                <div class="input__box">
+                                    <label for="email">{{ __('Frontend/auth.email_address') }}</label>
+                                    <input type="email" name="email" value="{{ old('email') }}">
+                                    @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                                <div class="input__box">
+                                    <label for="password">{{ __('Frontend/auth.password') }}</label>
+                                    <input type="password" name="password">
+                                    @error('password')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                                <div class="input__box">
+                                    <label for="password_confirmation">{{ __('Frontend/auth.password_confirmation') }}</label>
+                                    <input type="password" name="password_confirmation">
+                                    @error('password_confirmation')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
 
-                            <div class="form__btn">
-                                {!! Form::button('Reset Password', ['type' => 'submit']) !!}
+                                <div class="form__btn">
+                                    <button type="submit">{{ __('Frontend/auth.reset_password') }}</button>
+                                </div>
                             </div>
-                        </div>
-                        {!! Form::close() !!}
+                        </form>
                     </div>
                 </div>
             </div>

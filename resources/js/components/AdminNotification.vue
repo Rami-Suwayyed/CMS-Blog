@@ -9,7 +9,7 @@
         <!-- Dropdown - Alerts -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" v-if="unreadCount > 0">
             <h6 class="dropdown-header">
-                Alerts Center
+                {{ trans('notifications.alerts_center') }}
             </h6>
 
             <a class="dropdown-item d-flex align-items-center" v-for="item in unread" :key="item.id" :href="`/admin/post_comments/${item.data.id}/edit`" @click="readNotifications(item)">
@@ -20,7 +20,7 @@
                 </div>
                 <div>
                     <div class="small text-gray-500">{{ item.data.created_at }}</div>
-                    <span class="font-weight-bold">There is a new comment on: {{ item.data.post_title }}</span>
+                    <span class="font-weight-bold">{{ trans('notifications.new_comment', {'post_title': item.data.post_title}) }}</span>
                 </div>
             </a>
 

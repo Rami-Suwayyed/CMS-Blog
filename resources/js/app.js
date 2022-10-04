@@ -6,7 +6,16 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
+import _ from 'lodash';
+
+Vue.prototype.trans = (string, args) => {
+    let value = _.get(window.i18n, string);
+    _.eachRight(args, (paramVal, paramKey) => {
+        value = _.replace(value, `:${paramKey}`, paramVal);
+    });
+    return value;
+};
 
 /**
  * The following block of code may be used to automatically register your

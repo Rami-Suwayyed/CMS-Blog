@@ -18,23 +18,27 @@ class PagesTableSeeder extends Seeder
         $faker = Factory::create();
 
         Page::create([
-            'title'         => 'About Us',
-            'description'   => $faker->paragraph,
-            'status'        => 1,
-            'comment_able'  => 0,
-            'post_type'     => 'page',
-            'user_id'       => 1,
-            'category_id'   => 1,
+            'title'             => 'نبذة عنا',
+            'description'       => $faker->paragraph,
+            'title_en'          => 'About Us',
+            'description_en'    => $faker->paragraph,
+            'status'            => 1,
+            'comment_able'      => 0,
+            'post_type'         => 'page',
+            'user_id'           => 1,
+            'category_id'       => 1,
         ]);
 
         Page::create([
-            'title'         => 'Our Vision',
-            'description'   => $faker->paragraph,
-            'status'        => 1,
-            'comment_able'  => 0,
-            'post_type'     => 'page',
-            'user_id'       => 1,
-            'category_id'   => 1,
+            'title'             => 'رؤيتنا',
+            'title_en'          => 'Our Vision',
+            'description'       => $faker->paragraph,
+            'description_en'    => $faker->paragraph,
+            'status'            => 1,
+            'comment_able'      => 0,
+            'post_type'         => 'page',
+            'user_id'           => 1,
+            'category_id'       => 1,
         ]);
 
 

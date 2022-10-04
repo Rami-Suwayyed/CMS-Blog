@@ -3,7 +3,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Comments</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/post_comments.comments') }}</h6>
         </div>
 
         @include('backend.post_comments.filter.filter')
@@ -12,12 +12,12 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Author</th>
-                    <th width="40%">Comment</th>
-                    <th>Status</th>
-                    <th>Created at</th>
-                    <th class="text-center" style="width: 30px;">Actions</th>
+                    <th>{{ __('Backend/post_comments.image') }}</th>
+                    <th>{{ __('Backend/post_comments.author') }}</th>
+                    <th width="40%">{{ __('Backend/post_comments.comment') }}</th>
+                    <th>{{ __('Backend/post_comments.status') }}</th>
+                    <th>{{ __('Backend/post_comments.created_at') }}</th>
+                    <th class="text-center" style="width: 30px;">{{ __('Backend/post_comments.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">No comments found</td>
+                        <td colspan="6" class="text-center">{{ __('Backend/post_comments.no_comments_found') }}</td>
                     </tr>
                 @endforelse
                 </tbody>
@@ -54,7 +54,7 @@
                 <tr>
                     <th colspan="6">
                         <div class="float-right">
-                            {!! $comments->appends(request()->input())->links() !!}
+                            {!! $comments->links() !!}
                         </div>
                     </th>
                 </tr>

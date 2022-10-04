@@ -24,9 +24,9 @@ class SettingsController extends Controller
             return redirect('admin/index');
         }
 
-        $section = (isset(\request()->section) && \request()->section != '') ? \request()->section : 'general';
-        $settings_sections = Setting::select('section')->distinct()->pluck('section');
-        $settings = Setting::whereSection($section)->get();
+        $section = (request('section') != '') ? request('section') : 'general';
+        $settings_sections = Setting::select('section', 'section_en')->distinct()->get();
+        $settings = Setting::where('section', $section)->orWhere('section_en', $section)->get();
 
         return view('backend.settings.index', compact('section', 'settings_sections', 'settings'));
 
@@ -49,8 +49,13 @@ class SettingsController extends Controller
     private function generateCache()
     {
         $settings = Valuestore::make(config_path('settings.json'));
-        Setting::all()->each(function ($item) use ($settings) {
+        Setting::whereLang('ar')->each(function ($item) use ($settings) {
             $settings->put($item->key, $item->value);
+        });
+
+        $settings_en = Valuestore::make(config_path('settings_en.json'));
+        Setting::whereLang('en')->each(function ($item) use ($settings_en) {
+            $settings_en->put($item->key, $item->value);
         });
     }
 

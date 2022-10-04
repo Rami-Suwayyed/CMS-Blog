@@ -32,24 +32,19 @@ class SupervisorsController extends Controller
             return redirect('admin/index');
         }
 
-        $keyword = (isset(\request()->keyword) && \request()->keyword != '') ? \request()->keyword : null;
-        $status = (isset(\request()->status) && \request()->status != '') ? \request()->status : null;
-        $sort_by = (isset(\request()->sort_by) && \request()->sort_by != '') ? \request()->sort_by : 'id';
-        $order_by = (isset(\request()->order_by) && \request()->order_by != '') ? \request()->order_by : 'desc';
-        $limit_by = (isset(\request()->limit_by) && \request()->limit_by != '') ? \request()->limit_by : '10';
-
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('name', 'editor');
-        });
-        if ($keyword != null) {
-            $users = $users->search($keyword);
-        }
-        if ($status != null) {
-            $users = $users->whereStatus($status);
-        }
-
-        $users = $users->orderBy($sort_by, $order_by);
-        $users = $users->paginate($limit_by);
+        $users = User::query()
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'editor');
+            })
+            ->when(request('keyword') != '', function($query) {
+                $query->search(request('keyword'));
+            })
+            ->when(request('status') != '', function($query) {
+                $query->whereStatus(request('status'));
+            })
+            ->orderBy(request('sort_by') ?? 'id', request('order_by') ?? 'desc')
+            ->paginate(request('limit_by') ?? 10)
+            ->withQueryString();
 
         return view('backend.supervisors.index', compact('users'));
     }
@@ -59,7 +54,7 @@ class SupervisorsController extends Controller
         if (!\auth()->user()->ability('admin', 'create_supervisors')) {
             return redirect('admin/index');
         }
-        $permissions = Permission::pluck('display_name', 'id');
+        $permissions = Permission::select('id', 'display_name', 'display_name_en')->get();
         return view('backend.supervisors.create', compact('permissions'));
     }
 
@@ -140,8 +135,8 @@ class SupervisorsController extends Controller
 
         $user = User::whereId($id)->first();
         if ($user) {
-            $permissions = Permission::pluck('display_name', 'id');
-            $userPermissions = UserPermission::whereUserId($id)->pluck('permission_id');
+            $permissions = Permission::select('id', 'display_name', 'display_name_en')->get();
+            $userPermissions = UserPermission::whereUserId($id)->pluck('permission_id')->toArray();
             return view('backend.supervisors.edit', compact('user', 'permissions', 'userPermissions'));
         }
         return redirect()->route('admin.supervisors.index')->with([

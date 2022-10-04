@@ -30,22 +30,16 @@ class PostCategoriesController extends Controller
             return redirect('admin/index');
         }
 
-        $keyword = (isset(\request()->keyword) && \request()->keyword != '') ? \request()->keyword : null;
-        $status = (isset(\request()->status) && \request()->status != '') ? \request()->status : null;
-        $sort_by = (isset(\request()->sort_by) && \request()->sort_by != '') ? \request()->sort_by : 'id';
-        $order_by = (isset(\request()->order_by) && \request()->order_by != '') ? \request()->order_by : 'desc';
-        $limit_by = (isset(\request()->limit_by) && \request()->limit_by != '') ? \request()->limit_by : '10';
-
-        $categories = Category::withCount('posts');
-        if ($keyword != null) {
-            $categories = $categories->search($keyword);
-        }
-        if ($status != null) {
-            $categories = $categories->whereStatus($status);
-        }
-
-        $categories = $categories->orderBy($sort_by, $order_by);
-        $categories = $categories->paginate($limit_by);
+        $categories = Category::withCount('posts')
+            ->when(request('keyword') != '', function($query) {
+                $query->search(request('keyword'));
+            })
+            ->when(request('status') != '', function($query) {
+                $query->whereStatus(request('status'));
+            })
+            ->orderBy(request('sort_by') ?? 'id', request('order_by') ?? 'desc')
+            ->paginate(request('limit_by') ?? 10)
+            ->withQueryString();
 
         return view('backend.post_categories.index', compact('categories'));
 
@@ -68,14 +62,16 @@ class PostCategoriesController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
+            'name_en'       => 'required',
             'status'        => 'required',
         ]);
         if($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data['name']              = $request->name;
-        $data['status']             = $request->status;
+        $data['name']       = $request->name;
+        $data['name_en']    = $request->name_en;
+        $data['status']     = $request->status;
 
         Category::create($data);
 
@@ -112,6 +108,7 @@ class PostCategoriesController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
+            'name_en'       => 'required',
             'status'        => 'required',
         ]);
         if($validator->fails()) {
@@ -123,8 +120,9 @@ class PostCategoriesController extends Controller
         if ($category) {
             $data['name']               = $request->name;
             $data['slug']               = null;
+            $data['name_en']            = $request->name_en;
+            $data['slug_en']            = null;
             $data['status']             = $request->status;
-
 
             $category->update($data);
 

@@ -6,21 +6,23 @@
             <div class="row">
                 <div class="col-lg-6 offset-md-3">
                     <div class="my__account__wrapper">
-                        <h3 class="account__title">Password Reset</h3>
-                        {!! Form::open(['route' => 'password.email', 'method' => 'post']) !!}
-
-                        <div class="account__form">
-                            <div class="input__box">
-                                {!! Form::label('email', 'email *') !!}
-                                {!! Form::email('email', old('email')) !!}
-                                @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                        <h3 class="account__title">{{ __('Frontend/auth.password_reset') }}</h3>
+                        <form action="{{ route('password.email') }}" method="post">
+                            @csrf
+                            <div class="account__form">
+                                <div class="input__box">
+                                    <label for="email">{{ __('Frontend/auth.email_address') }}</label>
+                                    <input type="email" name="email" value="{{ old('email') }}">
+                                    @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                                <div class="form__btn">
+                                    <button type="submit">
+                                        {{ __('Frontend/auth.send_password_reset') }}
+                                    </button>
+                                </div>
+                                <a class="forget_pass" href="{{ route('frontend.show_login_form') }}">{{ __('Frontend/auth.login_2') }}</a>
                             </div>
-                            <div class="form__btn">
-                                {!! Form::button('Send Password Reset Link', ['type' => 'submit']) !!}
-                            </div>
-                            <a class="forget_pass" href="{{ route('frontend.show_login_form') }}">Login?</a>
-                        </div>
-                        {!! Form::close() !!}
+                        </form>
                     </div>
                 </div>
             </div>

@@ -3,39 +3,48 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Create category</h6>
+            <h6 class="m-0 font-weight-bold text-primary">{{ __('Backend/post_categories.create_category') }}</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.post_categories.index') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-home"></i>
                     </span>
-                    <span class="text">Categories</span>
+                    <span class="text">{{ __('Backend/post_categories.categories') }}</span>
                 </a>
             </div>
         </div>
         <div class="card-body">
-
-            {!! Form::open(['route' => 'admin.post_categories.store', 'method' => 'post']) !!}
-            <div class="row">
-                <div class="col-8">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Name') !!}
-                        {!! Form::text('name', old('name'), ['class' => 'form-control']) !!}
-                        @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+            <form action="{{ route('admin.post_categories.store') }}" method="post">
+                @csrf
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="name">{{ __('Backend/post_categories.name') }}</label>
+                            <input type="text" name="name" value="{{ old('name') }}" class="form-control">
+                            @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="name_en">{{ __('Backend/post_categories.name_en') }}</label>
+                            <input type="text" name="name_en" value="{{ old('name_en') }}" class="form-control">
+                            @error('name_en')<span class="text-danger">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="status">{{ __('Backend/posts.status') }}</label>
+                        <select name="status" class="form-control">
+                            <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>{{ __('Backend/post_categories.active') }}</option>
+                            <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>{{ __('Backend/post_categories.inactive') }}</option>
+                        </select>
+                        @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
 
-                <div class="col-4">
-                    {!! Form::label('status', 'status') !!}
-                    {!! Form::select('status', ['1' => 'Active', '0' => 'Inactive'], old('status'), ['class' => 'form-control']) !!}
-                    @error('status')<span class="text-danger">{{ $message }}</span>@enderror
+                <div class="form-group pt-4">
+                    <button type="submit" class="btn btn-primary">{{ __('Backend/post_categories.submit') }}</button>
                 </div>
-            </div>
-
-            <div class="form-group pt-4">
-                {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-            </div>
-            {!! Form::close() !!}
+            </form>
         </div>
     </div>
 

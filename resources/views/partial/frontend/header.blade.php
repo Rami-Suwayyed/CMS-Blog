@@ -12,25 +12,35 @@
             <div class="col-lg-8 d-none d-lg-block">
                 <nav class="mainmenu__nav">
                     <ul class="meninmenu d-flex justify-content-start">
-                        <li class="drop with--one--item"><a href="{{ route('frontend.index') }}">Home</a></li>
-                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', 'about-us') }}">About Us</a></li>
-                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', 'our-vision') }}">Our Vision</a></li>
-                        <li class="drop"><a href="javascript:void(0);">Blog</a>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.index') }}">{{ __('Frontend/general.home') }}</a></li>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', config('app.locale') == 'ar' ? 'نبذة-عنا' : 'about-us') }}">{{ __('Frontend/general.about_us') }}</a></li>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', config('app.locale') == 'ar' ? 'رؤيتنا' : 'our-vision') }}">{{ __('Frontend/general.our_vision') }}</a></li>
+                        <li class="drop"><a href="javascript:void(0);">{{ __('Frontend/general.blog') }}</a>
                             <div class="megamenu dropdown">
                                 <ul class="item item01">
                                     @foreach($global_categories as $global_category)
-                                        <li><a href="{{ route('frontend.category.posts', $global_category->slug) }}">{{ $global_category->name }}</a></li>
+                                        <li><a href="{{ route('frontend.category.posts', $global_category->url_slug()) }}">{{ $global_category->name() }}</a></li>
                                     @endforeach
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
+                        <li><a href="{{ route('frontend.contact') }}">{{ __('Frontend/general.contact') }}</a></li>
                     </ul>
                 </nav>
             </div>
 
             <div class="col-md-8 col-sm-8 col-5 col-lg-2">
                 <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+                    @if(config('app.locale') == 'ar')
+                        <li class="lang_link">
+                            <a href="{{ route('change_locale', 'en') }}">English</a>
+                        </li>
+                    @else
+                        <li class="lang_link">
+                            <a href="{{ route('change_locale', 'ar') }}">عربي</a>
+                        </li>
+                    @endif
+
                     <li class="shop_search"><a class="search__active" href="#"></a></li>
 
                     <user-notification></user-notification>
@@ -46,11 +56,11 @@
                                         <div class="switcher-currency-trigger">
                                             <div class="setting__menu">
                                                 @guest
-                                                    <span><a href="{{ route('frontend.show_login_form') }}">Login</a></span>
-                                                    <span><a href="{{ route('frontend.show_register_form') }}">Register</a></span>
+                                                    <span><a href="{{ route('frontend.show_login_form') }}">{{ __('Frontend/auth.login') }}</a></span>
+                                                    <span><a href="{{ route('frontend.show_register_form') }}">{{ __('Frontend/auth.register') }}</a></span>
                                                 @else
-                                                    <span><a href="{{ route('users.dashboard') }}">My Dashboard</a></span>
-                                                    <span><a href="{{ route('frontend.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></span>
+                                                    <span><a href="{{ route('users.dashboard') }}">{{ __('Frontend/general.my_dashboard') }}</a></span>
+                                                    <span><a href="{{ route('frontend.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Frontend/general.logout') }}</a></span>
                                                     <form id="logout-form" action="{{ route('frontend.logout') }}" method="POST" style="display: none;">
                                                         @csrf
                                                     </form>
@@ -71,17 +81,17 @@
             <div class="col-lg-12 d-none">
                 <nav class="mobilemenu__nav">
                     <ul class="meninmenu">
-                        <li><a href="{{ route('frontend.index') }}">Home</a></li>
-                        <li><a href="{{ route('frontend.posts.show', 'about-us') }}">About Us</a></li>
-                        <li><a href="{{ route('frontend.posts.show', 'our-vision') }}">Our Vision</a></li>
-                        <li><a href="javascript:void(0);">Blog</a>
+                        <li><a href="{{ route('frontend.index') }}">{{ __('Frontend/general.home') }}</a></li>
+                        <li><a href="{{ route('frontend.posts.show', config('app.locale') == 'ar' ? 'نبذة-عنا' : 'about-us') }}">{{ __('Frontend/general.about_us') }}</a></li>
+                        <li><a href="{{ route('frontend.posts.show', config('app.locale') == 'ar' ? 'رؤيتنا' : 'our-vision') }}">{{ __('Frontend/general.our_vision') }}</a></li>
+                        <li><a href="javascript:void(0);">{{ __('Frontend/general.blog') }}</a>
                             <ul>
-                                <li><a href="#">Un-Categorized</a></li>
-                                <li><a href="#">Natural</a></li>
-                                <li><a href="#">Flowers</a></li>
+                                @foreach($global_categories as $global_category)
+                                    <li><a href="{{ route('frontend.category.posts', $global_category->url_slug()) }}">{{ $global_category->name() }}</a></li>
+                                @endforeach
                             </ul>
                         </li>
-                        <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
+                        <li><a href="{{ route('frontend.contact') }}">{{ __('Frontend/general.contact') }}</a></li>
                     </ul>
                 </nav>
             </div>
@@ -95,17 +105,17 @@
 <!-- //Header -->
 <!-- Start Search Popup -->
 <div class="box-search-content search_active block-bg close__top">
-    {!! Form::open(['route' => 'frontend.search', 'method' => 'get', 'id' => 'search_mini_form', 'class' => 'minisearch']) !!}
-    <div class="field__search">
-        {!! Form::text('keyword', old('keyword', request()->keyword), ['placeholder' => 'Search...']) !!}
-        <div class="action">
-            <a href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('search_mini_form').submit();"><i class="zmdi zmdi-search"></i></a>
+    <form action="{{ route('frontend.search') }}" method="get" id="search_mini_form" class="minisearch">
+        <div class="field__search">
+            <input type="text" name="keyword" value="{{ old('keyword', request('keyword')) }}" placeholder="{{ __('Frontend/general.search') }}">
+            <div class="action">
+                <a href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('search_mini_form').submit();"><i class="zmdi zmdi-search"></i></a>
+            </div>
         </div>
-    </div>
-    {!! Form::close() !!}
+    </form>
 
     <div class="close__wrap">
-        <span>close</span>
+        <span>{{ __('Frontend/general.close') }}</span>
     </div>
 </div>
 <!-- End Search Popup -->
@@ -114,59 +124,3 @@
 
 </div>
 <!-- End Bradcaump area -->
-
-
-
-
-{{--
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
-
-            </ul>
-
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
-                <!-- Authentication Links -->
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                    </li>
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
-                @else
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }} <span class="caret"></span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
-                @endguest
-            </ul>
-        </div>
-    </div>
-</nav>
---}}

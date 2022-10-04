@@ -15,7 +15,9 @@
                                 <a :href="`edit-comment/${item.data.id}`" @click="readNotifications(item)"><img src="/frontend/images/icons/comment.png" alt="`${item.data.post_title}`"></a>
                             </div>
                             <div class="content">
-                                <a :href="`edit-comment/${item.data.id}`" @click="readNotifications(item)">You have new comment on your post: {{ item.data.post_title }}</a>
+                                <a :href="`edit-comment/${item.data.id}`" @click="readNotifications(item)">
+                                    {{ trans('notifications.user_new_comment', {'post_title': item.data.post_title}) }}
+                                </a>
                             </div>
                         </div>
                     </div>

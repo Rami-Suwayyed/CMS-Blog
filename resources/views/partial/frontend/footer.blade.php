@@ -20,12 +20,12 @@
                                 <li><a href="#"><i class="bi bi-youtube"></i></a></li>
                             </ul>
                             <ul class="mainmenu d-flex justify-content-center">
-                                <li><a href="index.html">Trending</a></li>
-                                <li><a href="index.html">Best Seller</a></li>
-                                <li><a href="index.html">All Product</a></li>
-                                <li><a href="index.html">Wishlist</a></li>
-                                <li><a href="index.html">Blog</a></li>
-                                <li><a href="index.html">Contact</a></li>
+                                <li><a href="index.html">{{ __('Frontend/general.trending') }}</a></li>
+                                <li><a href="index.html">{{ __('Frontend/general.best_seller') }}</a></li>
+                                <li><a href="index.html">{{ __('Frontend/general.all_product') }}</a></li>
+                                <li><a href="index.html">{{ __('Frontend/general.wishlist') }}</a></li>
+                                <li><a href="index.html">{{ __('Frontend/general.blog') }}</a></li>
+                                <li><a href="index.html">{{ __('Frontend/general.contact') }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="copyright">
                         <div class="copy__right__inner text-left">
-                            <p>Copyright <i class="fa fa-copyright"></i> <a href="https://freethemescloud.com/">Free themes Cloud.</a> All Rights Reserved</p>
+                            <p>{!! __('Frontend/general.copyright') !!}</p>
                         </div>
                     </div>
                 </div>

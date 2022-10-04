@@ -20,9 +20,9 @@ class RolesTableSeeder extends Seeder
         $faker = Factory::create();
 
 
-        $adminRole = Role::create(['name' => 'admin', 'display_name' => 'Administrator', 'description' => 'System Administrator', 'allowed_route' => 'admin']);
-        $editorRole = Role::create(['name' => 'editor', 'display_name' => 'Supervisor', 'description' => 'System Supervisor', 'allowed_route' => 'admin']);
-        $userRole = Role::create(['name' => 'user', 'display_name' => 'User', 'description' => 'Normal User', 'allowed_route' => null]);
+        $adminRole = Role::create(['name' => 'admin', 'display_name_en' => 'Administrator', 'description_en' => 'System Administrator', 'display_name' => 'الإدارة', 'description' => 'مدير النظام', 'allowed_route' => 'admin']);
+        $editorRole = Role::create(['name' => 'editor', 'display_name_en' => 'Supervisor', 'description_en' => 'System Supervisor', 'display_name' => 'مشرف', 'description' => 'مشرف النظام', 'allowed_route' => 'admin']);
+        $userRole = Role::create(['name' => 'user', 'display_name_en' => 'User', 'description_en' => 'Normal User', 'display_name' => 'مستخدم', 'description' => 'مستخدم عادي', 'allowed_route' => null]);
 
         $admin = User::create([
             'name' => 'Admin',

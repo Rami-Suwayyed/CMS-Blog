@@ -1,0 +1,35 @@
+<?php
+
+return [
+
+    'supervisors'           => 'المشرفين',
+    'add_new_supervisor'    => 'إضافة مشرف جديد',
+    'edit_supervisor'       => 'تحرير المشرف',
+    'image'                 => 'صورة',
+    'name'                  => 'اسم',
+    'username'              => 'اسم المستخدم',
+    'password'              => 'كلمة المرور',
+    'email'                 => 'بريد الالكتروني',
+    'receive_email'         => 'استلام بريد الكتروني',
+    'yes'                   => 'نعم',
+    'no'                    => 'رقم',
+    'bio'                   => 'السيرة الذاتية',
+    'permissions'           => 'أذونات',
+    'mobile'                => 'متحرك',
+    'email_mobile'          => 'البريد الإلكتروني والجوال',
+    'status'                => 'حالة',
+    'created_at'            => 'أنشئت في',
+    'actions'               => 'أجراءات',
+    'no_supervisors_found'  => 'لم يتم العثور على مشرفين',
+    'active'                => 'نشيط',
+    'inactive'              => 'غير نشط',
+    'id'                    => 'بطاقة تعريف',
+    'ascending'             => 'تصاعدي',
+    'descending'            => 'تنازلي',
+    'search'                => 'بحث',
+    'image_hint'            => 'يجب أن يكون عرض الصورة 300 بكسل × 300 بكسل',
+    'submit'                => 'إرسال',
+    'remove_image'          => 'إزالة الصورة',
+    'update'                => 'تحديث',
+
+];

@@ -4,11 +4,13 @@
     <div class="row">
         <div class="col-3">
             <div class="card">
-                <div class="card-header">Settings</div>
+                <div class="card-header">{{ __('Backend/settings.settings') }}</div>
                 <ul class="list-group list-group-flush">
                     @foreach($settings_sections as $settings_section)
                         <li class="list-group-item">
-                            <a href="{{ route('admin.settings.index', ['section' => $settings_section]) }}" class="nav-link"><i class="fa fa-gear"></i> {{ $settings_section }}</a>
+                            <a href="{{ route('admin.settings.index', ['section' => $settings_section->section_en]) }}" class="nav-link">
+                                <i class="fa fa-gear"></i> {{ $settings_section->section() }}
+                            </a>
                         </li>
                     @endforeach
                 </ul>
@@ -16,42 +18,51 @@
         </div>
         <div class="col-9">
             <div class="card">
-                <div class="card-header">Settings {{ $section }}</div>
+                <div class="card-header">{{ __('Backend/settings.settings') }} {{ config('app.locale') == 'ar' ? $settings[0]->section : $settings[0]->section_en }}</div>
                 <div class="card-body">
-                    {!! Form::model($settings, ['route' => ['admin.settings.update', 1], 'method' => 'patch']) !!}
-                    @foreach($settings as $setting)
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="title">{{ $setting->display_name }}</label>
-                                @if ($setting->type == 'text')
-                                    <input type="text" name="value[{{ $loop->index }}]" id="value" class="form-control" value="{{ $setting->value }}">
-                                @elseif($setting->type == 'textarea')
-                                    <textarea name="value[{{ $loop->index }}]" id="value" class="form-control" cols="30" rows="10">{{ $setting->value }}</textarea>
-                                @elseif($setting->type == 'image')
-                                    <input type="file" name="value[{{ $loop->index }}]" id="value" class="form-control">
-                                @elseif($setting->type == 'select')
-                                    {!! Form::select('value[' . $loop->index . ']', explode('|', $setting->details) , $setting->value , ['id' => 'value', 'class' => 'form-control']) !!}
-                                @elseif($setting->type == 'checkbox')
-                                    {!! Form::checkbox('value[' . $loop->index . ']', 1, $setting->value == 1 ? true : false , ['id' => 'value', 'class' => 'styled']) !!}
-                                @elseif($setting->type == 'radio')
-                                    {!! Form::radio('value[' . $loop->index . ']', 1, $setting->value == 1 ? true : false , ['id' => 'value', 'class' => 'styled']) !!}
-                                @endif
+                    <form action="{{ route('admin.settings.update', 1) }}" method="post">
+                        @csrf
+                        @method('PATCH')
+                        @foreach($settings as $setting)
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="title">{{ $setting->display_name() }}</label>
+                                    @if ($setting->type == 'text')
+                                        <input type="text" name="value[{{ $loop->index }}]" id="value" class="form-control" value="{{ $setting->value }}">
+                                    @elseif($setting->type == 'textarea')
+                                        <textarea name="value[{{ $loop->index }}]" id="value" class="form-control" cols="30" rows="10">{{ $setting->value }}</textarea>
+                                    @elseif($setting->type == 'image')
+                                        <input type="file" name="value[{{ $loop->index }}]" id="value" class="form-control">
+                                    @elseif($setting->type == 'select')
+{{--                                        {!! Form::select('value[' . $loop->index . ']', explode('|', $setting->details) , $setting->value , ['id' => 'value', 'class' => 'form-control']) !!}--}}
+                                            <select name="value['{{ $loop->index }}']" id="value" class="form-control">
+                                                @foreach(explode('|', $setting->details) as $detail)
+                                                    <option value="{{ $detail }}" {{ $detail == $setting->value ? 'selected' : '' }}>{{ $detail }}</option>
+                                                @endforeach
+                                            </select>
+                                    @elseif($setting->type == 'checkbox')
+                                        <input type="checkbox" name="value['{{ $loop->index }}']" value="1" id="value" class="styled" {{ $setting->value == 1 ? true : false }}>
+                                    @elseif($setting->type == 'radio')
+                                        <input type="radio" name="value['{{ $loop->index }}']" value="1" id="value" class="styled" {{ $setting->value == 1 ? true : false }}>
+                                    @endif
 
-                                <input type="hidden" name="key[{{ $loop->index }}]" id="key" class="form-control" value="{{ $setting->key }}" readonly>
-                                <input type="hidden" name="id[{{ $loop->index }}]" id="key" class="form-control" value="{{ $setting->id }}" readonly>
-                                <input type="hidden" name="ordering[{{ $loop->index }}]" id="key" class="form-control" value="{{ $setting->ordering }}" readonly>
+                                    <input type="hidden" name="key[{{ $loop->index }}]" id="key" class="form-control" value="{{ $setting->key }}" readonly>
+                                    <input type="hidden" name="id[{{ $loop->index }}]" id="key" class="form-control" value="{{ $setting->id }}" readonly>
+                                    <input type="hidden" name="ordering[{{ $loop->index }}]" id="key" class="form-control" value="{{ $setting->ordering }}" readonly>
 
-                                @error('value') <span class="text-danger">{{ $message }}</span>@enderror
+                                    @error('value') <span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    @endforeach
+                        @endforeach
 
-                    <div class="text-right">
-                        {!! Form::button('Submit', ['type' => 'submit', 'class' => 'btn btn-primary']) !!}
-                    </div>
-                    {!! Form::close() !!}
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">
+                                {{ __('Backend/settings.submit') }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

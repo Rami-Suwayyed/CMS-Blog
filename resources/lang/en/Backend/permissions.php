@@ -1,0 +1,38 @@
+<?php
+
+return [
+
+    'permissions'           => 'Permissions',
+    'permission'            => 'Permission',
+    'add_permission'        => 'Add permission',
+    'edit_permission'       => 'Edit permission',
+    'create'                => 'Create',
+    'id'                    => 'ID',
+    'name'                  => 'Name',
+    'display_name'          => 'Display name',
+    'display_name_en'       => 'Display name (English)',
+    'description'           => 'Description',
+    'description_en'        => 'Description (English)',
+    'guard_name'            => 'Guard name',
+    'route'                 => 'Route',
+    'module'                => 'Module',
+    'as'                    => 'As',
+    'icon'                  => 'Icon',
+    'parent'                => 'Parent',
+    'parent_show'           => 'Parent show',
+    'parent_original'       => 'Parent original',
+    'appear'                => 'Appear',
+    'ordering'              => 'Ordering',
+    'no'                    => 'No',
+    'yes'                   => 'Yes',
+    'main'                  => 'Main',
+    'search'                => 'Search',
+    'submit'                => 'Submit',
+    'ascending'             => 'Ascending',
+    'descending'            => 'Descending',
+    'no_permissions_found'  => 'No permissions found',
+    'actions'               => 'Actions',
+    'created_at'            => 'Created at',
+    'sidebar_link'          => 'Sidebar link',
+
+];
