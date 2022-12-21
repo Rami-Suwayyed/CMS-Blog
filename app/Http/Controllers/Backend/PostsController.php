@@ -108,7 +108,7 @@ class PostsController extends Controller
                 $file_size = $file->getSize();
                 $file_type = $file->getMimeType();
                 $path = public_path('assets/posts/' . $filename);
-                Image::make($file->getRealPath())->resize(800, null, function ($constraint) {
+                Image::make($file->getRealPath())->resize(800, 800, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($path, 100);
 
@@ -211,7 +211,7 @@ class PostsController extends Controller
                     $file_size = $file->getSize();
                     $file_type = $file->getMimeType();
                     $path = public_path('assets/posts/' . $filename);
-                    Image::make($file->getRealPath())->resize(800, null, function ($constraint) {
+                    Image::make($file->getRealPath())->resize(800, 800, function ($constraint) {
                         $constraint->aspectRatio();
                     })->save($path, 100);
 
