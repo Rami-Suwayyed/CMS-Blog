@@ -2420,8 +2420,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   cluster: "eu",
   forceTLS: true,
   wsHost: window.location.hostname,
-  wsPort: 6006,
-  wssPort: 6006,
+  wsPort: 6008,
+  wssPort: 6008,
   disableStats: true,
   encrypted: true
 });

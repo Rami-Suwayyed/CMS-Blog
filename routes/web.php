@@ -88,4 +88,3 @@ Route::get('/{post}',                                   [Frontend\IndexControlle
 Route::post('/{post}',                                  [Frontend\IndexController::class, 'store_comment'])->name('frontend.posts.add_comment');
 
 
-
