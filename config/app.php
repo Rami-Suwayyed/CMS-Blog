@@ -233,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Entrust'   => Mindscms\Entrust\EntrustFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Entrust'   => Mindscms\Entrust\EntrustFacade::class,
 
     ],
 

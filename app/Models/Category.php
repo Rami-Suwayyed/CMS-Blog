@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
@@ -10,17 +9,14 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 class Category extends Model
 {
 
-    use HasFactory, Sluggable, SearchableTrait;
+    use HasFactory, SearchableTrait;
 
     protected $guarded = [];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ],
-            'slug_en' => [
                 'source' => 'name_en'
             ]
         ];
@@ -29,6 +25,7 @@ class Category extends Model
     protected $searchable = [
         'columns'   => [
             'categories.name'       => 10,
+            'categories.name_en'    => 10,
             'categories.slug'       => 10,
         ],
     ];
@@ -50,7 +47,7 @@ class Category extends Model
 
     public function url_slug()
     {
-        return config('app.locale') == 'ar' ? $this->slug : $this->slug_en;
+        return $this->slug;
     }
 
 }

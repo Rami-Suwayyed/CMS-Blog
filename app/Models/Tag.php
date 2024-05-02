@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,19 +9,16 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Tag extends Model
 {
-    use HasFactory, Sluggable, SearchableTrait;
+    use HasFactory, SearchableTrait;
 
     protected $guarded = [];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ],
-            'slug_en' => [
                 'source' => 'name_en'
-            ]
+            ],
         ];
     }
 
@@ -30,6 +26,7 @@ class Tag extends Model
         'columns'   => [
             'tags.name'         => 10,
             'tags.name_en'      => 10,
+            'tags.slug'         => 10,
         ],
     ];
 
@@ -45,7 +42,7 @@ class Tag extends Model
 
     public function url_slug()
     {
-        return config('app.locale') == 'ar' ? $this->slug : $this->slug_en;
+        return  $this->slug ;
     }
 
 }

@@ -132,6 +132,7 @@ class PostsController extends Controller
 
                 $new_tags[] = $tag->id;
             }
+
             $post->tags()->sync($new_tags);
         }
 

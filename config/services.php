@@ -30,16 +30,24 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'facebook' => [
-        'client_id' => '',
-        'client_secret' => '',
-        'redirect' => 'https://bloggi.test/login/facebook/callback',
+    'twitter' => [
+        'client_id' => 'TWITTER_CLIENT_ID',
+        'client_secret' => 'TWITTER_CLIENT_SECRET',
+        'redirect' => env('APP_URL') . '/login/twitter/callback',
     ],
 
-    'twitter' => [
-        'client_id' => '',
-        'client_secret' => '',
-        'redirect' => 'https://bloggi.test/login/twitter/callback',
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('APP_URL') . '/login/google/callback',
+        'api_key' => env('GOOGLE_API_KEY'),
+    ],
+
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('APP_URL') . '/login/facebook/callback',
     ],
 
 ];

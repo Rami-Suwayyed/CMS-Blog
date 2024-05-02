@@ -2,24 +2,20 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Post extends Model
 {
-    use HasFactory, Sluggable, SearchableTrait;
+    use HasFactory, SearchableTrait;
 
     protected $guarded = [];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ],
-            'slug_en' => [
                 'source' => 'title_en'
             ]
         ];
@@ -28,8 +24,9 @@ class Post extends Model
     protected $searchable = [
         'columns'   => [
             'posts.title'           => 10,
-            'posts.description'     => 10,
             'posts.title_en'        => 10,
+            'posts.slug'            => 10,
+            'posts.description'     => 10,
             'posts.description_en'  => 10,
         ],
     ];
@@ -85,7 +82,7 @@ class Post extends Model
 
     public function url_slug()
     {
-        return config('app.locale') == 'ar' ? $this->slug : $this->slug_en;
+        return $this->slug;
     }
 
     public function description()

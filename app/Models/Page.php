@@ -14,13 +14,10 @@ class Page extends Model
     protected $table = 'posts';
     protected $guarded = [];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ],
-            'slug_en' => [
                 'source' => 'title_en'
             ]
         ];
@@ -30,6 +27,7 @@ class Page extends Model
         'columns'   => [
             'posts.title'           => 10,
             'posts.title_en'        => 10,
+            'posts.slug'            => 10,
             'posts.description'     => 10,
             'posts.description_en'  => 10,
         ],
@@ -62,7 +60,7 @@ class Page extends Model
 
     public function url_slug()
     {
-        return config('app.locale') == 'ar' ? $this->slug : $this->slug_en;
+        return  $this->slug ;
     }
 
     public function description()
