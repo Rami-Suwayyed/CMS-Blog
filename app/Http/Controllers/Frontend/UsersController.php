@@ -241,7 +241,6 @@ class UsersController extends Controller
             $data['slug']               = null;
             $data['description']        = Purify::clean($request->description);
             $data['title_en']           = $request->title_en;
-            $data['slug_en']            = null;
             $data['description_en']     = Purify::clean($request->description_en);
             $data['status']             = $request->status;
             $data['comment_able']       = $request->comment_able;

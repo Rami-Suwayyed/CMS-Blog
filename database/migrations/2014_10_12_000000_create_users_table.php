@@ -15,16 +15,18 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->enum('user_role',['admin','user'])->default('user');
             $table->string('name');
-            $table->string('username')->unique();
+            $table->string('username')->nullable()->unique();
             $table->string('email')->unique();
-            $table->string('mobile')->unique();
+            $table->string('Phone_number')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('user_image')->nullable();
-            $table->unsignedTinyInteger('status')->default(0);
             $table->text('bio')->nullable();
+            $table->string('user_image')->nullable();
+            $table->boolean("is_super_admin")->default(0);
             $table->unsignedTinyInteger('receive_email')->default(0);
+            $table->unsignedTinyInteger('status')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -121,7 +121,6 @@ class PostCategoriesController extends Controller
             $data['name']               = $request->name;
             $data['slug']               = null;
             $data['name_en']            = $request->name_en;
-            $data['slug_en']            = null;
             $data['status']             = $request->status;
 
             $category->update($data);

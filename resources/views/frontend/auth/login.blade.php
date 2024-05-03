@@ -31,7 +31,7 @@
 
                                 <div class="form__btn">
                                     <a href="{{ route('frontend.social_login', 'facebook') }}" class="btn btn-block" style="background-color: #1877F2; color: #ffffff;">{{ __('Frontend/auth.login_facebook') }}</a>
-                                    <a href="{{ route('frontend.social_login', 'twitter') }}" class="btn btn-block" style="background-color: #1DA1F2; color: #ffffff;">{{ __('Frontend/auth.login_twitter') }}</a>
+{{--                                    <a href="{{ route('frontend.social_login', 'twitter') }}" class="btn btn-block" style="background-color: #1DA1F2; color: #ffffff;">{{ __('Frontend/auth.login_twitter') }}</a>--}}
                                     <a href="{{ route('frontend.social_login', 'google') }}" class="btn btn-block" style="background-color: #ce453a; color: #ffffff;">{{ __('Frontend/auth.login_google') }}</a>
                                 </div>
                             </div>

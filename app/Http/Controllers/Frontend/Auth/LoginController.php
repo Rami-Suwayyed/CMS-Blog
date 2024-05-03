@@ -77,15 +77,12 @@ class LoginController extends Controller
 
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->redirect();
+      return Socialite::driver($provider)->redirect();
     }
 
     public function handleProviderCallback($provider)
     {
-        $socialUser = Socialite::driver($provider)->user();
-
-        // dd($provider, $socialUser);
-
+        $socialUser = Socialite::driver($provider)->stateless()->user();
         $token = $socialUser->token;
         $id = $socialUser->getId();
         $nickName = $socialUser->getNickname();
@@ -113,7 +110,7 @@ class LoginController extends Controller
             Image::make($avatar)->save($path, 100);
             $user->update(['user_image' => $filename]);
         }
-        $user->attachRole(Role::whereName('user')->first()->id);
+//        $user->attachRole(Role::whereName('user')->first()->id);
 
         Auth::login($user, true);
 

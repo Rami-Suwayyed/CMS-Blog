@@ -196,7 +196,6 @@ class PostsController extends Controller
             $data['title']              = $request->title;
             $data['title_en']           = $request->title_en;
             $data['slug']               = null;
-            $data['slug_en']            = null;
             $data['description']        = Purify::clean($request->description);
             $data['description_en']     = Purify::clean($request->description_en);
             $data['status']             = $request->status;
