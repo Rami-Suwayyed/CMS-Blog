@@ -95,16 +95,20 @@ class LoginController extends Controller
         $name = $socialUser->getName();
         $email = $socialUser->getEmail() == '' ? trim(Str::lower(Str::replaceArray(' ', ['_'], $name))).'@'.$provider.'.com' : $socialUser->getEmail();
         $avatar = $socialUser->getAvatar();
-
+        $nameTrim =trim(Str::lower(Str::replaceArray(' ', ['_'], $name)));
+        $Username = User::whereUsername($nameTrim)->first();
+        if ($Username) {
+            $nameTrim = $nameTrim.'_'.$id;
+        }
         $user = User::firstOrCreate([
             'email' => $email
         ], [
             'name' => $name,
             'user_role'=> 'user',
-            'username' => $nickName != '' ? $nickName : trim(Str::lower(Str::replaceArray(' ', ['_'], $name))),
+            'username' => $nickName != '' ? $nickName : trim(Str::lower(Str::replaceArray(' ', ['_'], $nameTrim))),
             'email' => $email,
             'email_verified_at' => Carbon::now(),
-            'phone_number' => $id,
+            'phone_number' => '00000000000',
             'status' => 1,
             'receive_email' => 1,
             'remember_token' => $token,

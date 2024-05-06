@@ -93,6 +93,23 @@ class PostsTableSeeder extends Seeder
                 public_path('assets/tmp/24.jpg'),
                 public_path('assets/tmp/25.jpg'),
                 public_path('assets/tmp/26.jpg'),
+                public_path('assets/tmp/27.jpg'),
+                public_path('assets/tmp/28.jpg'),
+                public_path('assets/tmp/29.jpg'),
+                public_path('assets/tmp/30.jpg'),
+                public_path('assets/tmp/31.jpg'),
+                public_path('assets/tmp/32.jpg'),
+                public_path('assets/tmp/33.jpg'),
+                public_path('assets/tmp/34.jpg'),
+                public_path('assets/tmp/35.jpg'),
+                public_path('assets/tmp/36.jpg'),
+                public_path('assets/tmp/37.jpg'),
+                public_path('assets/tmp/38.jpg'),
+                public_path('assets/tmp/39.jpg'),
+                public_path('assets/tmp/40.jpg'),
+                public_path('assets/tmp/41.jpg'),
+                public_path('assets/tmp/42.jpg'),
+                public_path('assets/tmp/43.jpg'),
             ];
 
 
