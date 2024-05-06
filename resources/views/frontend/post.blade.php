@@ -104,10 +104,6 @@
                             <input type="text" name="email" value="{{ old('email') }}" placeholder="{{ __('Frontend/general.your_email_here') }}">
                             @error('email')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
-                        <div class="input__box website one--third">
-                            <input type="text" name="url" value="{{ old('url') }}" placeholder="{{ __('Frontend/general.your_url_here') }}">
-                            @error('url')<span class="text-danger">{{ $message }}</span>@enderror
-                        </div>
                     </div>
                     <div class="submite__btn">
                         <button type="submit" class="btn btn-primary">

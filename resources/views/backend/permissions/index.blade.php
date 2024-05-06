@@ -20,16 +20,16 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th>{{ __('Backend/permissions.slug') }}</th>
                     <th>{{ __('Backend/permissions.name') }}</th>
-                    <th>{{ __('Backend/permissions.display_name') }}</th>
                     <th class="text-center" style="width: 30px;">{{ __('Backend/permissions.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($permissions as $permission)
                     <tr>
-                        <td>{{ $permission->name }}</td>
-                        <td>{{ $permission->display_name() }}</a></td>
+                        <td>{{ $permission->slug }}</td>
+                        <td>{{ $permission->name }}</a></td>
                         <td>
                             <div class="btn-group">
                                 <a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>

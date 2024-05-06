@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Role;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class CheckRole
@@ -19,24 +20,14 @@ class CheckRole
     {
         $routeName = Route::getFacadeRoot()->current()->uri();
         $route = explode('/', $routeName);
-        $roleRoutes = Role::distinct()->whereNotNull('allowed_route')->pluck('allowed_route')->toArray();
-
         if (auth()->check()) {
-            if (!in_array($route[0], $roleRoutes)) {
+            if (auth()->user()->user_role == 'admin'){
                 return $next($request);
-            } else {
-                if ($route[0] != auth()->user()->roles[0]->allowed_route) {
-                    $path = $route[0] == auth()->user()->roles[0]->allowed_route ? $route[0].'.show_login_form' : '' . auth()->user()->roles[0]->allowed_route.'.index';
-                    return redirect()->route($path);
-                } else {
-                    return $next($request);
-                }
+            }else{
+              return redirect()->route('users.dashboard');
             }
-        } else {
-            $routeDistination = in_array($route[0], $roleRoutes) ? $route[0].'.show_login_form' : 'user.show_login_form';
-            $path = $route[0] != '' ? $routeDistination : auth()->user()->roles[0]->allowed_route.'.index';
-            return redirect()->route($path);
         }
+        return redirect()->route('admin.login');
 
     }
 }

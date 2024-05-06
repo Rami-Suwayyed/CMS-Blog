@@ -12,11 +12,11 @@
                 </div>
                 <div class="single-contact-form space-between">
                     <input type="text" name="email" value="{{ old('email') }}" placeholder="{{ __('Frontend/general.your_email_here') }}">
-                    <input type="text" name="mobile" value="{{ old('mobile') }}" placeholder="{{ __('Frontend/general.your_mobile_here') }}">
+                    <input type="text" name="phone_number" value="{{ old('phone_number') }}" placeholder="{{ __('Frontend/general.your_phone_number_here') }}">
                 </div>
                 <div class="single-contact-form space-between">
                     @error('email')<span class="text-danger">{{ $message }}</span>@enderror
-                    @error('mobile')<span class="text-danger">{{ $message }}</span>@enderror
+                    @error('phone_number')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="single-contact-form">
                     <input type="text" name="title" value="{{ old('title') }}" placeholder="{{ __('Frontend/general.your_title_here') }}">
@@ -37,7 +37,7 @@
     <div class="col-lg-4 col-12 md-mt-40 sm-mt-40">
         <div class="wn__address">
             <h2 class="contact__title">{{ __('Frontend/general.get_office_info') }}</h2>
-            <p>Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. </p>
+            <p>{{ __('Frontend/general.contact_us_info') }}</p>
             <div class="wn__addres__wreapper">
 
                 <div class="single__address">

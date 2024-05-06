@@ -19,8 +19,8 @@
 
                                 {!! Form::open(['route' => 'admin.show_login_form', 'method' => 'post']) !!}
                                 <div class="form-group">
-                                    {!! Form::text('username', old('username'), ['class' => 'form-control form-control-user', 'placeholder' => 'Enter your username']) !!}
-                                    @error('username') <span class="text-danger">{{ $message }}</span>@enderror
+                                    {!! Form::text('login', old('login'), ['class' => 'form-control form-control-user', 'placeholder' => 'Enter your Email or username']) !!}
+                                    @error('email'||'username') <span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                                 <div class="form-group">
                                     {!! Form::password('password', ['class' => 'form-control form-control-user', 'placeholder' => 'Enter your password']) !!}

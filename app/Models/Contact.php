@@ -16,7 +16,7 @@ class Contact extends Model
         'columns'   => [
             'contacts.name'     => 10,
             'contacts.email'    => 10,
-            'contacts.mobile'   => 10,
+            'contacts.phone_number'   => 10,
             'contacts.title'    => 10,
             'contacts.message'  => 10,
         ],

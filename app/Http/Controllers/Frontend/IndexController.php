@@ -29,7 +29,7 @@ class IndexController extends Controller
             ->post()
             ->active()
             ->orderBy('id', 'desc')
-            ->paginate(5)
+            ->paginate(10)
             ->withQueryString();
 
         return view('frontend.index', compact('posts'));
@@ -50,7 +50,7 @@ class IndexController extends Controller
             ->post()
             ->active()
             ->orderBy('id', 'desc')
-            ->paginate(5)
+            ->paginate(10)
             ->withQueryString();
         return view('frontend.index', compact('posts'));
     }
@@ -65,7 +65,7 @@ class IndexController extends Controller
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
-                ->paginate(5)
+                ->paginate(10)
                 ->withQueryString();
             return view('frontend.index', compact('posts'));
         }
@@ -85,7 +85,7 @@ class IndexController extends Controller
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
-                ->paginate(5)
+                ->paginate(10)
                 ->withQueryString();
             return view('frontend.index', compact('posts'));
         }
@@ -105,7 +105,7 @@ class IndexController extends Controller
             ->post()
             ->active()
             ->orderBy('id', 'desc')
-            ->paginate(5)
+            ->paginate(10)
             ->withQueryString();
         return view('frontend.index', compact('posts'));
     }
@@ -119,7 +119,7 @@ class IndexController extends Controller
                 ->post()
                 ->active()
                 ->orderBy('id', 'desc')
-                ->paginate(5)
+                ->paginate(10)
                 ->withQueryString();
             return view('frontend.index', compact('posts'));
         }
@@ -153,12 +153,25 @@ class IndexController extends Controller
 
     }
 
+
+    public function showPage($post)
+    {
+        $post = Post::query()
+            ->with(['media'])
+            ->whereSlug($post)
+            ->active()
+            ->first();
+        if($post->post_type == 'page')
+            return view('frontend.page', compact('post'));
+            abort(404);
+    }
+
+
     public function store_comment(Request $request, $slug)
     {
         $validation = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required|email',
-            'url'       => 'nullable|url',
             'comment'   => 'required|min:10',
         ]);
         if ($validation->fails()){
@@ -171,7 +184,6 @@ class IndexController extends Controller
             $userId = auth()->check() ? auth()->id() : null;
             $data['name']           = $request->name;
             $data['email']          = $request->email;
-            $data['url']            = $request->url;
             $data['ip_address']     = $request->ip();
             $data['comment']        = Purify::clean($request->comment);
             $data['post_id']        = $post->id;
@@ -212,7 +224,7 @@ class IndexController extends Controller
         $validation = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required|email',
-            'mobile'    => 'nullable|numeric',
+            'phone_number'    => 'nullable|numeric',
             'title'     => 'required|min:5',
             'message'   => 'required|min:10',
         ]);
@@ -222,7 +234,7 @@ class IndexController extends Controller
 
         $data['name']       = $request->name;
         $data['email']      = $request->email;
-        $data['mobile']     = $request->mobile;
+        $data['phone_number']     = $request->phone_number;
         $data['title']      = $request->title;
         $data['message']    = $request->message;
 

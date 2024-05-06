@@ -49,11 +49,37 @@ class User extends Authenticatable implements MustVerifyEmail
             'users.name'        => 10,
             'users.username'    => 10,
             'users.email'       => 10,
-            'users.mobile'      => 10,
+            'users.phone_number' => 10,
             'users.bio'         => 10,
         ],
     ];
 
+
+    public function isAdmin($query)
+    {
+        return   $query->where('user_role', 'admin');// this looks for an admin column in your users table
+    }
+
+    public function scopeAdmin($query)
+    {
+        return   $query->where('user_role', 'admin');// this looks for an admin column in your users table
+    }
+
+
+    public function role(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
+    {
+        return $this->hasOneThrough(Role::class, RelatedRole::class, "user_id", "id", "id", "role_id");
+    }
+
+    public function relatedRole(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(RelatedRole::class);
+    }
+
+
+    public function isAdministrator(){
+        return $this->is_super_admin;
+    }
     public function posts()
     {
         return $this->hasMany(Post::class);

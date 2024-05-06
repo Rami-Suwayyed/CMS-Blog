@@ -14,7 +14,7 @@ return [
          */
 
         'en' => ['en', 'en_US', false, 'English'],
-        'ar' => ['ar', 'ar_SA', true, 'Arabic'],
+        'ar' => ['ar', 'ar_JO', true, 'Arabic'],
 
     ]
 

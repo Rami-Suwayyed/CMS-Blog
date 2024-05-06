@@ -5,9 +5,12 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
-class Page extends Model
+class Page extends Model implements Sitemapable
 {
     use HasFactory, Sluggable, SearchableTrait;
 
@@ -66,6 +69,17 @@ class Page extends Model
     public function description()
     {
         return config('app.locale') == 'ar' ? $this->description : $this->description_en;
+    }
+
+
+
+    public function toSitemapTag(): Url
+    {
+//        return route('frontend.posts.show', $this->slug);
+        return URL::create(route('frontend.pages.show', $this))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+            ->setPriority(0.1);
     }
 
 }

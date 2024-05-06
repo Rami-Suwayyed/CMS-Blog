@@ -26,14 +26,9 @@ class UsersController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_users,show_users')) {
-            return redirect('admin/index');
-        }
 
         $users = User::query()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'user');
-            })
+            ->whereUserRole('user')
             ->when(request('keyword') != '', function($query) {
                 $query->search(request('keyword'));
             })
@@ -49,23 +44,19 @@ class UsersController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_users')) {
-            return redirect('admin/index');
-        }
+
         return view('backend.users.create');
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_users')) {
-            return redirect('admin/index');
-        }
+
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'username'      => 'required|max:20|unique:users',
             'email'         => 'required|email|max:255|unique:users',
-            'mobile'        => 'required|numeric|unique:users',
+            'phone_number'        => 'required|numeric|unique:users',
             'status'        => 'required',
             'password'      => 'required|min:8',
         ]);
@@ -77,7 +68,7 @@ class UsersController extends Controller
         $data['username']       = $request->username;
         $data['email']          = $request->email;
         $data['email_verified_at'] = Carbon::now();
-        $data['mobile']         = $request->mobile;
+        $data['phone_number']         = $request->phone_number;
         $data['password']       = bcrypt($request->password);
         $data['status']         = $request->status;
         $data['bio']            = $request->bio;
@@ -103,9 +94,6 @@ class UsersController extends Controller
 
     public function show($id)
     {
-        if (!\auth()->user()->ability('admin', 'display_users')) {
-            return redirect('admin/index');
-        }
 
         $user = User::whereId($id)->withCount('posts')->first();
         if ($user) {
@@ -120,9 +108,6 @@ class UsersController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_users')) {
-            return redirect('admin/index');
-        }
 
         $user = User::whereId($id)->first();
         if ($user) {
@@ -136,15 +121,12 @@ class UsersController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_users')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'username'      => 'required|max:20|unique:users,username,'.$id,
             'email'         => 'required|email|max:255|unique:users,email,'.$id,
-            'mobile'        => 'required|numeric|unique:users,mobile,'.$id,
+            'phone_number'        => 'required|numeric|unique:users,phone_number,'.$id,
             'status'        => 'required',
             'password'      => 'nullable|min:8',
         ]);
@@ -158,7 +140,7 @@ class UsersController extends Controller
             $data['name']           = $request->name;
             $data['username']       = $request->username;
             $data['email']          = $request->email;
-            $data['mobile']         = $request->mobile;
+            $data['phone_number']         = $request->phone_number;
             if (trim($request->password) != '') {
                 $data['password'] = bcrypt($request->password);
             }
@@ -196,9 +178,6 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_users')) {
-            return redirect('admin/index');
-        }
 
         $user = User::whereId($id)->first();
 
@@ -224,9 +203,6 @@ class UsersController extends Controller
 
     public function removeImage(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'delete_users')) {
-            return redirect('admin/index');
-        }
 
         $user = User::whereId($request->user_id)->first();
         if ($user) {

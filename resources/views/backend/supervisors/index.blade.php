@@ -22,7 +22,7 @@
                 <tr>
                     <th>{{ __('Backend/supervisors.image') }}</th>
                     <th>{{ __('Backend/supervisors.name') }}</th>
-                    <th>{{ __('Backend/supervisors.email_mobile') }}</th>
+                    <th>{{ __('Backend/supervisors.email_phone_number') }}</th>
                     <th>{{ __('Backend/supervisors.status') }}</th>
                     <th>{{ __('Backend/supervisors.created_at') }}</th>
                     <th class="text-center" style="width: 30px;">{{ __('Backend/supervisors.actions') }}</th>
@@ -44,7 +44,7 @@
                         </td>
                         <td>
                             {{ $user->email }}
-                            <p class="text-gray-400"><b>{{ $user->mobile }}</b></p>
+                            <p class="text-gray-400"><b>{{ $user->phone_number }}</b></p>
                         </td>
                         <td>{{ $user->status() }}</td>
                         <td>{{ $user->created_at->format('d-m-Y h:i a') }}</td>

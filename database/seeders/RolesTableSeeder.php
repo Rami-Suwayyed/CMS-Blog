@@ -2,11 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class RolesTableSeeder extends Seeder
 {
@@ -19,55 +25,142 @@ class RolesTableSeeder extends Seeder
     {
         $faker = Factory::create();
 
+        $roles_admin= new Role();
+        $roles_admin->setTranslation('name', 'en', 'admin')
+            ->setTranslation('name', 'ar', 'ادمن')
+            ->save();
 
-        $adminRole = Role::create(['name' => 'admin', 'display_name_en' => 'Administrator', 'description_en' => 'System Administrator', 'display_name' => 'الإدارة', 'description' => 'مدير النظام', 'allowed_route' => 'admin']);
-        $editorRole = Role::create(['name' => 'editor', 'display_name_en' => 'Supervisor', 'description_en' => 'System Supervisor', 'display_name' => 'مشرف', 'description' => 'مشرف النظام', 'allowed_route' => 'admin']);
-        $userRole = Role::create(['name' => 'user', 'display_name_en' => 'User', 'description_en' => 'Normal User', 'display_name' => 'مستخدم', 'description' => 'مستخدم عادي', 'allowed_route' => null]);
+        $roles_editor= new Role();
+        $roles_editor->setTranslation('name', 'en', 'Editor')
+            ->setTranslation('name', 'ar', 'محرر')
+            ->save();
+        $roles= new Role();
+        $roles->setTranslation('name', 'en', 'User')
+            ->setTranslation('name', 'ar', 'مستخدم')
+            ->save();
 
-        $admin = User::create([
-            'name' => 'Admin',
+        $permissions =Permission::get();
+        foreach ($permissions as $permission){
+            DB::table('role_permission')->insert(
+                ['role_id' => $roles_admin->id, 'permission_id' => $permission->id]
+            );
+        }
+        foreach ($permissions as $permission){
+            DB::table('role_permission')->insert(
+                ['role_id' => $roles_editor->id, 'permission_id' => $permission->id]
+            );
+        }
+
+
+        $tmp_images = [
+            public_path('assets/tmp/users/01.png'),
+            public_path('assets/tmp/users/02.png'),
+            public_path('assets/tmp/users/03.png'),
+            public_path('assets/tmp/users/04.png'),
+            public_path('assets/tmp/users/05.png'),
+            public_path('assets/tmp/users/06.png'),
+            public_path('assets/tmp/users/07.png'),
+            public_path('assets/tmp/users/08.png'),
+            public_path('assets/tmp/users/09.png'),
+            public_path('assets/tmp/users/10.png'),
+        ];
+
+
+
+
+        $filename1 = Str::slug(Str::random(10)) .'.png';
+        $path1 = public_path('/assets/users/' . $filename1);
+        Image::make(Arr::random($tmp_images))->save($path1, 100);
+
+        $admin =  User::create([
+            'user_role' => 'admin',
+            'name' => 'admin',
             'username' => 'admin',
-            'email' => 'admin@suwayyed-blog.com',
-            'mobile' => '962781860708',
+            'email' => 'admin@bloggi.online',
             'email_verified_at' => Carbon::now(),
-            'password' => bcrypt('12341234'),
+            'phone_number' => $faker->phoneNumber,
+            'bio' => 'Admin User',
+            'user_image' => $filename1,
+            'receive_email' => 1,
+            'password' =>  Hash::make('password'),
+            'is_super_admin' => 1,
             'status' => 1,
+            'remember_token' => Str::random(10),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
-        $admin->attachRole($adminRole);
 
+        DB::table('role_user')->insert(
+            ['role_id' => $roles_admin->id, 'user_id' => $admin->id]
+        );
+
+
+        $filename2 = Str::slug(Str::random(10)) .'.png';
+        $path2 = public_path('/assets/users/' . $filename2);
+        Image::make(Arr::random($tmp_images))->save($path2, 100);
 
         $editor = User::create([
+            'user_role' => 'admin',
             'name' => 'Editor',
             'username' => 'editor',
-            'email' => 'editor@bloggi.test',
-            'mobile' => '96278888811',
+            'email' => 'editor@bloggi.online',
             'email_verified_at' => Carbon::now(),
-            'password' => bcrypt('123123123'),
+            'phone_number' => $faker->phoneNumber,
+            'bio' => 'Editor User',
+            'user_image' => $filename2,
+            'receive_email' => 1,
+            'password' =>  Hash::make('password'),
+            'is_super_admin' => 0,
             'status' => 1,
+            'remember_token' => Str::random(10),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
-        $editor->attachRole($editorRole);
 
 
-        $user1 = User::create(['name' => 'Rami Suwayyed', 'username' => 'rami96', 'email' => 'Rami.Suwayyed@suwayyed-blog.com', 'mobile' => '962781860702', 'email_verified_at' => Carbon::now(), 'password' => bcrypt('123123123'), 'status' => 1,]);
-        $user1->attachRole($userRole);
+        DB::table('role_user')->insert(
+            ['role_id' => $roles_editor->id, 'user_id' => $editor->id]
+        );
 
-        $user2 = User::create(['name' => 'Ahmad Suwayyed', 'username' => 'ahmad92', 'email' => 'Ahmad.Suwayyed@suwayyed-blog.com', 'mobile' => '962788716641', 'email_verified_at' => Carbon::now(), 'password' => bcrypt('123123123'), 'status' => 1,]);
-        $user2->attachRole($userRole);
+        $filename3 = Str::slug(Str::random(10)) .'.png';
+        $path3 = public_path('/assets/users/' . $filename3);
+        Image::make(Arr::random($tmp_images))->save($path3, 100);
 
-        $user3 = User::create(['name' => 'Mohammad Suwayyed', 'username' => 'mohammad99', 'email' => 'Mohammad.Suwayyed@suwayyed-blog.com', 'mobile' => '9621817654', 'email_verified_at' => Carbon::now(), 'password' => bcrypt('123123123'), 'status' => 1,]);
-        $user3->attachRole($userRole);
+        $user1 = User::create([
+            'user_role' => 'user',
+            'name' => 'Rami Suwayyed',
+            'username' => 'rami96',
+            'email' => 'Rami.Suwayyed@Bloggi.online',
+            'email_verified_at' => Carbon::now(),
+            'phone_number' => $faker->phoneNumber,
+            'bio' => 'User',
+            'user_image' => $filename3,
+            'receive_email' => 1,
+            'password' => bcrypt('123123123'),
+            'is_super_admin' => 0,
+            'status' => 1,
+            ]);
 
         for ($i = 0; $i <10; $i++) {
+
+            $filename = Str::slug(Str::random(10)) .'.png';
+            $path = public_path('/assets/users/' . $filename);
+            Image::make(Arr::random($tmp_images))->save($path, 100);
+
             $user = User::create([
+                'user_role' => 'user',
                 'name' => $faker->name,
                 'username' => $faker->userName,
                 'email' => $faker->email,
-                'mobile' => '9627' . random_int(10000000, 99999999),
                 'email_verified_at' => Carbon::now(),
-                'password' => bcrypt('1234512345'),
-                'status' => 1
+                'phone_number' => $faker->phoneNumber,
+                'bio' => $faker->text,
+                'user_image' => $filename,
+                'receive_email' => 1,
+                'password' => bcrypt('123123123'),
+                'is_super_admin' => 0,
+                'status' => 1,
             ]);
-            $user->attachRole($userRole);
         }
 
 

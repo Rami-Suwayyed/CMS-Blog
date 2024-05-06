@@ -29,7 +29,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/admin/index';
-
+    protected $loginField = "email";
     /**
      * Create a new controller instance.
      *
@@ -47,7 +47,12 @@ class LoginController extends Controller
 
     public function username()
     {
-        return 'username';
+        $loginFieldValue = request()->input("login");
+        if($loginFieldValue){
+            $this->loginField = filter_var($loginFieldValue, FILTER_VALIDATE_EMAIL) ? "email" : "username";
+            request()->merge([$this->loginField => $loginFieldValue]);
+        }
+        return $this->loginField;
     }
 
     protected function authenticated(Request $request, $user)

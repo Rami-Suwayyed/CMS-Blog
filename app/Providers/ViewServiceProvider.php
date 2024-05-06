@@ -116,11 +116,6 @@ class ViewServiceProvider extends ServiceProvider
                 if (!Cache::has('admin_side_menu')) {
                     Cache::forever('admin_side_menu', Permission::tree());
                 }
-                $admin_side_menu = Cache::get('admin_side_menu');
-
-                $view->with([
-                    'admin_side_menu' => $admin_side_menu,
-                ]);
 
             });
 

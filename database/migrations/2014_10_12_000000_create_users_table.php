@@ -19,14 +19,14 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('username')->nullable()->unique();
             $table->string('email')->unique();
-            $table->string('Phone_number')->nullable()->unique();
+            $table->string('phone_number')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->text('bio')->nullable();
             $table->string('user_image')->nullable();
             $table->boolean("is_super_admin")->default(0);
             $table->unsignedTinyInteger('receive_email')->default(0);
-            $table->unsignedTinyInteger('status')->default(0);
+            $table->unsignedTinyInteger('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

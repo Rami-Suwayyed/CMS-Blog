@@ -15,72 +15,105 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
+    <li class="nav-item @if(request()->routeIs("admin.index")) active @endif">
+        <a href="{{ route('admin.index') }}" class="nav-link ">
+            <i class="fa fa-home"></i>
+            <span>{{__('main')}}</span></a>
+    </li>
+    <hr class="sidebar-divider">
 
-    @role(['admin'])
-        @foreach($admin_side_menu as $menu)
-            @if (count($menu->appearedChildren) == 0)
-                <li class="nav-item {{ $menu->id == getParentShowOf($current_page) ? 'active' : '' }}">
-                    <a href="{{ route('admin.'. $menu->as) }}" class="nav-link">
-                        <i class="{{ $menu->icon != null ? $menu->icon : 'fa fa-home' }}"></i>
-                        <span>{{ $menu->display_name() }}</span></a>
-                </li>
-                <hr class="sidebar-divider">
-            @else
-                <li class="nav-item {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'active' : '' }}">
-                    <a class="nav-link {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'collapsed' : '' }}" href="#" data-toggle="collapse" data-target="#collapse_{{ $menu->route }}" aria-expanded="{{ $menu->parent_show == getParentOf($current_page) && getParentOf($current_page) != null ? 'false' : 'true' }}" aria-controls="collapse_{{ $menu->route }}">
-                        <i class="{{ $menu->icon != null ? $menu->icon : 'fa fa-home' }}"></i>
-                        <span>{{ $menu->display_name() }}</span>
-                    </a>
-                    @if (isset($menu->appearedChildren) && count($menu->appearedChildren) > 0)
-                        <div id="collapse_{{ $menu->route }}" class="collapse {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'show' : '' }}"
-                             aria-labelledby="heading_{{ $menu->route }}" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                @foreach($menu->appearedChildren as $sub_menu)
-                                    <a class="collapse-item {{ getParentOf($current_page) != null && (int)(getParentIdOf($current_page)+1) == $sub_menu->id ? 'active' : '' }}" href="{{ route('admin.' . $sub_menu->as) }}">{{ $sub_menu->display_name() }}</a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                </li>
-            @endif
-        @endforeach
-    @endrole
+    <!-- Nav Item - Posts Collapse Menu -->
+    <li class="nav-item @if(request()->routeIs("admin.posts.*") || request()->routeIs("admin.post_comments.*") || request()->routeIs("admin.post_categories.*") || request()->routeIs("admin.post_categories.*")) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-newspaper"></i>
+            <span>{{__('posts')}}</span>
+        </a>
+        <div id="collapseTwo" class="collapse @if(request()->routeIs("admin.posts.*") || request()->routeIs("admin.post_comments.*") || request()->routeIs("admin.post_categories.*") || request()->routeIs("admin.post_categories.*")) show @endif" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @if(request()->routeIs("admin.posts.*") ) active @endif" href="{{route('admin.posts.index')}}">{{__('posts')}}</a>
+                <a class="collapse-item @if(request()->routeIs("admin.post_comments.*") ) active @endif" href="{{route('admin.post_comments.index')}}">{{__('comments')}}</a>
+                <a class="collapse-item @if(request()->routeIs("admin.post_categories.*") ) active @endif" href="{{route('admin.post_categories.index')}}">{{__('categories')}}</a>
+                <a class="collapse-item @if(request()->routeIs("admin.post_tags.*") ) active @endif" href="{{route('admin.post_tags.index')}}">{{__('tags')}}</a>
+            </div>
+        </div>
+    </li>
 
-    @role(['editor'])
-    @foreach($admin_side_menu as $menu)
-        @permission($menu->name)
-            @if (count($menu->appearedChildren) == 0)
-                <li class="nav-item {{ $menu->id == getParentShowOf($current_page) ? 'active' : '' }}">
-                    <a href="{{ route('admin.'. $menu->as) }}" class="nav-link">
-                        <i class="{{ $menu->icon != null ? $menu->icon : 'fa fa-home' }}"></i>
-                        <span>{{ $menu->display_name() }}</span></a>
-                </li>
-                <hr class="sidebar-divider">
-            @else
-                <li class="nav-item {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'active' : '' }}">
-                    <a class="nav-link {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'collapsed' : '' }}" href="#" data-toggle="collapse" data-target="#collapse_{{ $menu->route }}" aria-expanded="{{ $menu->parent_show == getParentOf($current_page) && getParentOf($current_page) != null ? 'false' : 'true' }}" aria-controls="collapse_{{ $menu->route }}">
-                        <i class="{{ $menu->icon != null ? $menu->icon : 'fa fa-home' }}"></i>
-                        <span>{{ $menu->display_name() }}</span>
-                    </a>
-                    @if (isset($menu->appearedChildren) && count($menu->appearedChildren) > 0)
-                        <div id="collapse_{{ $menu->route }}" class="collapse {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'show' : '' }}"
-                             aria-labelledby="heading_{{ $menu->route }}" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                @foreach($menu->appearedChildren as $sub_menu)
-                                    @permission($sub_menu->name)
-                                    <a class="collapse-item {{ getParentOf($current_page) != null && (int)(getParentIdOf($current_page)+1) == $sub_menu->id ? 'active' : '' }}" href="{{ route('admin.' . $sub_menu->as) }}">{{ $sub_menu->display_name() }}</a>
-                                    @endpermission
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                </li>
-            @endif
-        @endpermission
-    @endforeach
-    @endrole
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item @if(request()->routeIs("admin.pages.*")) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-file"></i>
+            <span>{{__('pages')}}</span>
+        </a>
+        <div id="collapsePages" class="collapse @if(request()->routeIs("admin.pages.*")) show @endif" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @if(request()->routeIs("admin.pages.*")) active @endif" href="{{route('admin.pages.index')}}">{{__('pages')}}</a>
+            </div>
+        </div>
+    </li>
 
 
+    <!-- Nav Item - Users Collapse Menu -->
+    <li class="nav-item @if(request()->routeIs("admin.users.*")) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
+           aria-expanded="true" aria-controls="collapseUsers">
+            <i class="fas fa-user"></i>
+            <span>{{__('users')}}</span>
+        </a>
+        <div id="collapseUsers" class="collapse  @if(request()->routeIs("admin.users.*")) show @endif " aria-labelledby="headingUsers"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @if(request()->routeIs("admin.users.*")) active @endif " href="{{route('admin.users.index')}}">{{__('users')}}</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Roles Collapse Menu -->
+    <li class="nav-item @if(request()->routeIs("admin.roles.*")) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
+           aria-expanded="true" aria-controls="collapseRoles">
+            <i class="fas fa-scroll"></i>
+            <span>{{__('roles')}}</span>
+        </a>
+        <div id="collapseRoles" class="collapse  @if(request()->routeIs("admin.roles.*")) show @endif " aria-labelledby="headingRoles"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @if(request()->routeIs("admin.roles.*")) active @endif " href="{{route('admin.roles.index')}}">{{__('roles')}}</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Permissions Collapse Menu -->
+    <li class="nav-item @if(request()->routeIs("admin.permissions.*")) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePermissions"
+           aria-expanded="true" aria-controls="collapsePermissions">
+            <i class="fas fa-pencil-ruler"></i>
+            <span>{{__('permissions')}}</span>
+        </a>
+        <div id="collapsePermissions" class="collapse  @if(request()->routeIs("admin.permissions.*")) show @endif " aria-labelledby="headingPermissions"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @if(request()->routeIs("admin.permissions.*")) active @endif " href="{{route('admin.permissions.index')}}">{{__('permissions')}}</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Supervisors Collapse Menu -->
+    <li class="nav-item @if(request()->routeIs("admin.supervisors.*")) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSupervisors"
+           aria-expanded="true" aria-controls="collapseSupervisors">
+            <i class="fas fa-users-cog"></i>
+            <span>{{__('supervisors')}}</span>
+        </a>
+        <div id="collapseSupervisors" class="collapse  @if(request()->routeIs("admin.supervisors.*")) show @endif " aria-labelledby="headingSupervisors"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @if(request()->routeIs("admin.supervisors.*")) active @endif " href="{{route('admin.supervisors.index')}}">{{__('supervisors')}}</a>
+            </div>
+        </div>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

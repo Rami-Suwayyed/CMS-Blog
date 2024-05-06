@@ -17,7 +17,6 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->string('url')->nullable();
             $table->string('ip_address')->nullable();
             $table->text('comment');
             $table->unsignedTinyInteger('status')->default(0);

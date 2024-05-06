@@ -37,8 +37,8 @@
                 <button type="button" class="btn btn-primary btn-xs" id="select_btn_tag">{{ __('Frontend/general.select_all') }}</button>
                 <button type="button" class="btn btn-primary btn-xs" id="deselect_btn_tag">{{ __('Frontend/general.deselect_all') }}</button>
                 <select name="tags[]" id="select_all_tags" class="form-control selects" multiple="multiple">
-                    @foreach($tags->toArray() as $tag)
-                        <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags[]', $post->tags)) ? 'selected' : '' }}>{{ $tag->name() }}</option>
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags[]', $post->tags->pluck('id')->toArray())) ? 'selected' : '' }}>{{ $tag->name() }}</option>
                     @endforeach
                 </select>
                 @error('tags')<span class="text-danger">{{ $message }}</span>@enderror
@@ -48,7 +48,7 @@
                 <div class="col-4">
                     <label for="category_id">{{ __('Frontend/general.category_id') }}</label>
                     <select name="category_id" class="form-control">
-                        @foreach($categories->toArray() as $category)
+                        @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name() }}</option>
                         @endforeach
                     </select>

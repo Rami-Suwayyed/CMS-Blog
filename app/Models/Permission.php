@@ -1,64 +1,33 @@
 <?php
 
-
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Mindscms\Entrust\EntrustPermission;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
-class Permission extends EntrustPermission
+class Permission extends Model
 {
-    use HasFactory;
+    use HasFactory , HasTranslations,Sluggable;
 
-    protected $guarded = [];
+    protected $fillable = array('name', 'slug');
 
-    public function parent()
+    public $translatable = ['name'];
+
+
+    public function sluggable(): array
     {
-        return $this->hasOne(Permission::class, 'id', 'parent');
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 
-    public function children()
-    {
-        return $this->hasMany(Permission::class, 'parent', 'id');
-    }
 
-    public function appearedChildren()
+    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(Permission::class, 'parent', 'id')->where('appear', 1);
+        return $this->belongsToMany(Role::class, "role_permission", "permission_id", "role_id");
     }
-
-    public static function tree($level = 1)
-    {
-        return static::with(implode('.', array_fill(0, $level, 'children')))
-            ->whereParent(0)
-            ->whereAppear(1)
-            ->whereSidebarLink(1)
-            ->orderBy('ordering', 'asc')
-            ->get();
-    }
-
-    public function assign_children()
-    {
-        return $this->hasMany(Permission::class, 'parent_original', 'id');
-    }
-
-    public static function assign_permissions($level = 1)
-    {
-        return static::with(implode('.', array_fill(0, $level, 'assign_children')))
-            ->whereParentOriginal(0)
-            ->whereAppear(1)
-            ->orderBy('ordering', 'asc')
-            ->get();
-    }
-
-    public function display_name()
-    {
-        return config('app.locale') == 'ar' ? $this->display_name : $this->display_name_en;
-    }
-
-    public function description()
-    {
-        return config('app.locale') == 'ar' ? $this->description : $this->description_en;
-    }
-
 }

@@ -26,9 +26,6 @@ class PostCategoriesController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_post_categories,show_post_categories')) {
-            return redirect('admin/index');
-        }
 
         $categories = Category::withCount('posts')
             ->when(request('keyword') != '', function($query) {
@@ -47,19 +44,12 @@ class PostCategoriesController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_post_categories')) {
-            return redirect('admin/index');
-        }
 
         return view('backend.post_categories.create');
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_post_categories')) {
-            return redirect('admin/index');
-        }
-
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'name_en'       => 'required',
@@ -92,19 +82,12 @@ class PostCategoriesController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_post_categories')) {
-            return redirect('admin/index');
-        }
-
         $category = Category::whereId($id)->first();
         return view('backend.post_categories.edit', compact('category'));
     }
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_post_categories')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
@@ -141,10 +124,6 @@ class PostCategoriesController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_post_categories')) {
-            return redirect('admin/index');
-        }
-
         $category = Category::whereId($id)->first();
 
         foreach ($category->posts as $post) {

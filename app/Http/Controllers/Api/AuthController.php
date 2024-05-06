@@ -20,7 +20,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'mobile' => ['required', 'numeric', 'unique:users'],
+            'phone_number' => ['required', 'numeric', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed']
         ]);
         if ($validation->fails()) {
@@ -31,7 +31,7 @@ class AuthController extends Controller
         $data['username']           = $request->username;
         $data['email']              = $request->email;
         $data['email_verified_at']  = Carbon::now();
-        $data['mobile']             = $request->mobile;
+        $data['phone_number']             = $request->phone_number;
         $data['password']           = bcrypt($request->password);
         $data['status']             = 1;
 

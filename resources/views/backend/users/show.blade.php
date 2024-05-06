@@ -32,8 +32,8 @@
                         <td>{{ $user->email }}</td>
                     </tr>
                     <tr>
-                        <th>{{ __('Backend/users.mobile') }}</th>
-                        <td>{{ $user->mobile }}</td>
+                        <th>{{ __('Backend/users.phone_number') }}</th>
+                        <td>{{ $user->phone_number }}</td>
                         <th>{{ __('Backend/users.status') }}</th>
                         <td>{{ $user->status() }}</td>
                     </tr>

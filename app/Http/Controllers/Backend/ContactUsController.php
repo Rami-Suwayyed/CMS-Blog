@@ -20,9 +20,6 @@ class ContactUsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_contact_us,show_contact_us')) {
-            return redirect('admin/index');
-        }
 
         $messages = Contact::query()
             ->when(request('keyword') != '', function($query) {
@@ -40,10 +37,6 @@ class ContactUsController extends Controller
 
     public function show($id)
     {
-        if (!\auth()->user()->ability('admin', 'display_contact_us')) {
-            return redirect('admin/index');
-        }
-
         $message = Contact::whereId($id)->first();
         if ($message && $message->status == 0) {
             $message->status = 1;
@@ -54,9 +47,6 @@ class ContactUsController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_contact_us')) {
-            return redirect('admin/index');
-        }
 
         $message = Contact::whereId($id)->first();
 

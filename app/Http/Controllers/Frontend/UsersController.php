@@ -40,12 +40,18 @@ class UsersController extends Controller
         return view('frontend.users.edit_info');
     }
 
+    public function change_password()
+    {
+        return view('frontend.users.change_password');
+    }
+
+
     public function update_info(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'email'         => 'required|email',
-            'mobile'        => 'required|numeric',
+            'phone_number'        => 'required|numeric',
             'bio'           => 'nullable|min:10',
             'receive_email' => 'required',
             'user_image'    => 'nullable|image|max:20000,mimes:jpeg,jpg,png'
@@ -56,7 +62,7 @@ class UsersController extends Controller
 
         $data['name']           = $request->name;
         $data['email']          = $request->email;
-        $data['mobile']         = $request->mobile;
+        $data['phone_number']         = $request->phone_number;
         $data['bio']            = $request->bio;
         $data['receive_email']  = $request->receive_email;
 
@@ -89,6 +95,9 @@ class UsersController extends Controller
             ]);
         }
     }
+
+
+
 
     public function update_password(Request $request)
     {
@@ -374,7 +383,6 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'email'         => 'required|email',
-            'url'           => 'nullable|url',
             'status'        => 'required',
             'comment'       => 'required',
         ]);
@@ -389,7 +397,6 @@ class UsersController extends Controller
         if ($comment) {
             $data['name']          = $request->name;
             $data['email']         = $request->email;
-            $data['url']           = $request->url != '' ? $request->url : null;
             $data['status']        = $request->status;
             $data['comment']       = Purify::clean($request->comment);
 

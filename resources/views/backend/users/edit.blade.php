@@ -44,10 +44,10 @@
                     </div>
                     <div class="col-3">
                         <div class="form-group">
-                            <label for="mobile">{{ __('Backend/users.mobile') }}</label>
-                            <input type="text" name="mobile" value="{{ old('mobile', $user->mobile) }}"
+                            <label for="phone_number">{{ __('Backend/users.phone_number') }}</label>
+                            <input type="text" name="phone_number" value="{{ old('phone_number', $user->phone_number) }}"
                                    class="form-control">
-                            @error('mobile')<span class="text-danger">{{ $message }}</span>@enderror
+                            @error('phone_number')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
                 </div>

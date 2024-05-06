@@ -12,9 +12,7 @@ class Statistics extends Component
     public function render()
     {
 
-        $all_users = User::whereHas('roles', function ($query) {
-            $query->where('name', 'user');
-        })->whereStatus(1)->count();
+        $all_users = User::whereUserRole('user')->whereStatus(1)->count();
 
         $active_posts = Post::whereStatus(1)->wherePostType('post')->count();
         $inactive_posts = Post::whereStatus(0)->wherePostType('post')->count();

@@ -21,10 +21,6 @@ class PostTagsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_post_tags,show_post_tags')) {
-            return redirect('admin/index');
-        }
-
         $tags = Tag::withCount('posts')
             ->when(request('keyword') != '', function($query) {
                 $query->search(request('keyword'));
@@ -39,18 +35,12 @@ class PostTagsController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_post_tags')) {
-            return redirect('admin/index');
-        }
 
         return view('backend.post_tags.create');
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_post_tags')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
@@ -80,9 +70,6 @@ class PostTagsController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_post_tags')) {
-            return redirect('admin/index');
-        }
 
         $tag = Tag::whereId($id)->first();
         return view('backend.post_tags.edit', compact('tag'));
@@ -90,9 +77,6 @@ class PostTagsController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_post_tags')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
@@ -127,9 +111,6 @@ class PostTagsController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_post_tags')) {
-            return redirect('admin/index');
-        }
 
         $tag = Tag::whereId($id)->first();
         $tag->delete();

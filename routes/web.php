@@ -28,13 +28,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('email/resend', [Frontend\Auth\VerificationController::class, 'resend'])->name('verification.resend');
     Route::get('/change-language/{locale}', [ServiceController::class, 'change_language'])->name('change_locale');
 
-    Route::group(['middleware' => 'verified', 'as' => 'users.'], function () {
+    Route::group(['middleware' => ['verified','userRoles'], 'as' => 'users.'], function () {
         Route::get('/dashboard', [Frontend\UsersController::class, 'index'])->name('dashboard');
         Route::any('/user/notifications/get', [Frontend\NotificationsController::class, 'getNotifications']);
         Route::any('/user/notifications/read', [Frontend\NotificationsController::class, 'markAsRead']);
         Route::get('/edit-info', [Frontend\UsersController::class, 'edit_info'])->name('edit_info');
         Route::post('/edit-info', [Frontend\UsersController::class, 'update_info'])->name('update_info');
-        Route::post('/edit-password', [Frontend\UsersController::class, 'update_password'])->name('update_password');
+        Route::get('/change_password' ,[Frontend\UsersController::class, 'change_password'])->name('change_password');
+        Route::post('/update-password', [Frontend\UsersController::class, 'update_password'])->name('update_password');
         Route::get('/create-post', [Frontend\UsersController::class, 'create_post'])->name('post.create');
         Route::post('/create-post', [Frontend\UsersController::class, 'store_post'])->name('post.store');
         Route::get('/edit-post/{post_id}', [Frontend\UsersController::class, 'edit_post'])->name('post.edit');
@@ -53,7 +54,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::get('/login',                                [Backend\Auth\LoginController::class, 'showLoginForm'])->name('show_login_form');
     Route::post('login',                                [Backend\Auth\LoginController::class, 'login'])->name('login');
     Route::post('logout',                               [Backend\Auth\LoginController::class, 'logout'])->name('logout');
-    Route::group(['middleware' => ['roles', 'role:admin|editor']], function() {
+    Route::group(['middleware' => ['roles']], function() {
         Route::any('/notifications/get',                [Backend\NotificationsController::class, 'getNotifications']);
         Route::any('/notifications/read',               [Backend\NotificationsController::class, 'markAsRead']);
         Route::get('/',                                 [Backend\AdminController::class, 'index'])->name('index_route');
@@ -73,6 +74,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::resource('settings',                     Backend\SettingsController::class)->only(['index', 'update']);
         Route::resource('roles',                        Backend\RolesController::class);
         Route::resource('permissions',                  Backend\PermissionsController::class);
+        Route::get('profile/change_password',                  [Backend\ProfileController::class, 'change_password'])->name('profile.change_password');
+        Route::post('profile/change_password',                  [Backend\ProfileController::class, 'update_password'])->name('profile.update_password');
+        Route::resource('profile',                  Backend\ProfileController::class);
 
     });
 });
@@ -84,7 +88,10 @@ Route::get('/tag/{tag_slug}',                           [Frontend\IndexControlle
 Route::get('/archive/{date}',                           [Frontend\IndexController::class, 'archive'])->name('frontend.archive.posts');
 Route::get('/author/{username}',                        [Frontend\IndexController::class, 'author'])->name('frontend.author.posts');
 Route::get('/search',                                   [Frontend\IndexController::class, 'search'])->name('frontend.search');
-Route::get('/{post}',                                   [Frontend\IndexController::class, 'post_show'])->name('frontend.posts.show');
-Route::post('/{post}',                                  [Frontend\IndexController::class, 'store_comment'])->name('frontend.posts.add_comment');
+Route::get('/blog',                                     [Frontend\IndexController::class, 'index'])->name('frontend.posts.index');
+Route::get('/home',                                     [Frontend\IndexController::class, 'index'])->name('frontend.home.index');
+Route::get('/page/{post}',                              [Frontend\IndexController::class, 'showPage'])->name('frontend.pages.show');
+Route::get('/show_post/{post}',                         [Frontend\IndexController::class, 'post_show'])->name('frontend.posts.show');
+Route::post('/store_comment/{post}',                    [Frontend\IndexController::class, 'store_comment'])->name('frontend.posts.add_comment');
 
 

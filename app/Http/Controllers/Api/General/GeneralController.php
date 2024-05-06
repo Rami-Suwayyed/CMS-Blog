@@ -227,7 +227,7 @@ class GeneralController extends Controller
         $validation = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required|email',
-            'mobile'    => 'nullable|numeric',
+            'phone_number'    => 'nullable|numeric',
             'title'     => 'required|min:5',
             'message'   => 'required|min:10',
         ]);
@@ -237,7 +237,7 @@ class GeneralController extends Controller
 
         $data['name']       = $request->name;
         $data['email']      = $request->email;
-        $data['mobile']     = $request->mobile;
+        $data['phone_number']     = $request->phone_number;
         $data['title']      = $request->title;
         $data['message']    = $request->message;
 

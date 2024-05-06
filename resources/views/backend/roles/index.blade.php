@@ -21,7 +21,7 @@
                 <thead>
                 <tr>
                     <th>{{ __('Backend/roles.name') }}</th>
-                    <th>{{ __('Backend/roles.display_name') }}</th>
+                    <th>{{ __('Backend/roles.name') }}</th>
                     <th>{{ __('Backend/roles.allowed_route') }}</th>
                     <th>{{ __('Backend/roles.created_at') }}</th>
                     <th class="text-center" style="width: 30px;">{{ __('Backend/roles.actions') }}</th>
@@ -31,7 +31,7 @@
                 @forelse($roles as $role)
                     <tr>
                         <td>{{ $role->name }}</td>
-                        <td>{{ $role->display_name() }}</a></td>
+                        <td>{{ $role->name }}</a></td>
                         <td>{{ $role->allowed_route }}</td>
                         <td>{{ $role->created_at->format('d-m-Y h:i a') }}</td>
                         <td>

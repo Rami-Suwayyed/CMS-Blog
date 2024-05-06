@@ -11,32 +11,21 @@
         @if (session()->get('locale') == 'ar')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('change_locale', 'en') }}">
-                    English <img src="{{ asset('backend/img/us.png') }}" alt="EN" />
+                    <span class="mr-1 ml-1"> {{__('english')}} </span> <img src="{{ asset('backend/img/us.png') }}" alt="EN" />
                 </a>
             </li>
         @else
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('change_locale', 'ar') }}">
-                    عربي <img src="{{ asset('backend/img/sa.png') }}" alt="AR" />
+                   <span class="mr-1 ml-1">  {{__('arabic')}}</span> <img src="{{ asset('backend/img/sa.png') }}" alt="AR" />
                 </a>
             </li>
         @endif
-
-        @if(auth()->user()->ability('admin', 'manage_supervisors,show_supervisors'))
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.supervisors.index') }}">
-                {{ __('Backend/general.supervisors') }}
-            </a>
-        </li>
-        @endif
-
-        @if(auth()->user()->ability('admin', 'manage_settings,show_settings'))
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.settings.index') }}">
                 {{ __('Backend/general.settings') }}
             </a>
         </li>
-        @endif
 
         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -56,7 +45,7 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{route('admin.profile.index')}}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     {{ __('Backend/general.profile') }}
                 </a>

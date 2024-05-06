@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
-class Category extends Model
+class Category extends Model implements Sitemapable
 {
 
     use HasFactory, SearchableTrait;
@@ -49,5 +52,15 @@ class Category extends Model
     {
         return $this->slug;
     }
+
+    public function toSitemapTag(): Url
+    {
+//        return route('frontend.posts.show', $this->slug);
+        return URL::create(route('frontend.posts.show', $this))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+            ->setPriority(0.1);
+    }
+
 
 }

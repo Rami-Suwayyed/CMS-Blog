@@ -28,14 +28,9 @@ class SupervisorsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_supervisors,show_supervisors')) {
-            return redirect('admin/index');
-        }
 
         $users = User::query()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'editor');
-            })
+            ->whereUserRole('admin')
             ->when(request('keyword') != '', function($query) {
                 $query->search(request('keyword'));
             })
@@ -51,24 +46,18 @@ class SupervisorsController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_supervisors')) {
-            return redirect('admin/index');
-        }
-        $permissions = Permission::select('id', 'display_name', 'display_name_en')->get();
-        return view('backend.supervisors.create', compact('permissions'));
+        $roles = Role::having('name->en', '!=', 'user')->get();
+        return view('backend.supervisors.create', compact('roles'));
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_supervisors')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'username'      => 'required|max:20|unique:users',
             'email'         => 'required|email|max:255|unique:users',
-            'mobile'        => 'required|numeric|unique:users',
+            'phone_number'        => 'required|numeric|unique:users',
             'status'        => 'required',
             'password'      => 'required|min:8',
             'permissions.*' => 'required'
@@ -81,7 +70,7 @@ class SupervisorsController extends Controller
         $data['username']       = $request->username;
         $data['email']          = $request->email;
         $data['email_verified_at'] = Carbon::now();
-        $data['mobile']         = $request->mobile;
+        $data['phone_number']         = $request->phone_number;
         $data['password']       = bcrypt($request->password);
         $data['status']         = $request->status;
         $data['bio']            = $request->bio;
@@ -112,10 +101,6 @@ class SupervisorsController extends Controller
 
     public function show($id)
     {
-        if (!\auth()->user()->ability('admin', 'display_supervisors')) {
-            return redirect('admin/index');
-        }
-
         $user = User::whereId($id)->first();
         if ($user) {
             return view('backend.supervisors.show', compact('user'));
@@ -129,10 +114,6 @@ class SupervisorsController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_supervisors')) {
-            return redirect('admin/index');
-        }
-
         $user = User::whereId($id)->first();
         if ($user) {
             $permissions = Permission::select('id', 'display_name', 'display_name_en')->get();
@@ -147,15 +128,12 @@ class SupervisorsController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_supervisors')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'username'      => 'required|max:20|unique:users,username,'.$id,
             'email'         => 'required|email|max:255|unique:users,email,'.$id,
-            'mobile'        => 'required|numeric|unique:users,mobile,'.$id,
+            'phone_number'        => 'required|numeric|unique:users,phone_number,'.$id,
             'status'        => 'required',
             'password'      => 'nullable|min:8',
         ]);
@@ -169,7 +147,7 @@ class SupervisorsController extends Controller
             $data['name']           = $request->name;
             $data['username']       = $request->username;
             $data['email']          = $request->email;
-            $data['mobile']         = $request->mobile;
+            $data['phone_number']         = $request->phone_number;
             if (trim($request->password) != '') {
                 $data['password'] = bcrypt($request->password);
             }
@@ -211,9 +189,6 @@ class SupervisorsController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_supervisors')) {
-            return redirect('admin/index');
-        }
 
         $user = User::whereId($id)->first();
 
@@ -239,9 +214,6 @@ class SupervisorsController extends Controller
 
     public function removeImage(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'delete_supervisors')) {
-            return redirect('admin/index');
-        }
 
         $user = User::whereId($request->user_id)->first();
         if ($user) {

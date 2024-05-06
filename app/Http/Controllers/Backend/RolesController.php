@@ -22,10 +22,6 @@ class RolesController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_roles,show_roles')) {
-            return redirect('admin/index');
-        }
-
         $roles = Role::query()
             ->when(request('keyword') != '', function($query) {
                 $query->search(request('keyword'));
@@ -40,19 +36,12 @@ class RolesController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_roles')) {
-            return redirect('admin/index');
-        }
-
         $permissions = Permission::select('id', 'display_name', 'display_name_en')->get();
         return view('backend.roles.create', compact('permissions'));
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_roles')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'              => 'required|unique:roles,name',
@@ -92,10 +81,6 @@ class RolesController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_roles')) {
-            return redirect('admin/index');
-        }
-
         $role = Role::whereId($id)->first();
         $permissions = Permission::select('id', 'display_name', 'display_name_en')->get();
         $rolePerms = $role->perms()->pluck('id')->toArray();
@@ -104,10 +89,6 @@ class RolesController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_roles')) {
-            return redirect('admin/index');
-        }
-
         $validator = Validator::make($request->all(), [
             'name'              => 'required|unique:roles,name,'.$id,
             'display_name'      => 'required',
@@ -143,10 +124,6 @@ class RolesController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_roles')) {
-            return redirect('admin/index');
-        }
-
         Role::whereId($id)->delete();
 
         return redirect()->route('admin.roles.index')->with([

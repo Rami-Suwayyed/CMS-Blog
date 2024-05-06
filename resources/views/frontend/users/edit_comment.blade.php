@@ -7,28 +7,21 @@
             @csrf
             @method('PUT')
             <div class="row">
-                <div class="col-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">{{ __('Frontend/general.name') }}</label>
                         <input type="text" name="name" value="{{ old('name', $comment->name) }}" class="form-control">
                         @error('name')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="email">{{ __('Frontend/general.email') }}</label>
                         <input type="text" name="email" value="{{ old('email', $comment->email) }}" class="form-control">
                         @error('email')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="url">{{ __('Frontend/general.url') }}</label>
-                        <input type="text" name="url" value="{{ old('url', $comment->url) }}" class="form-control">
-                        @error('url')<span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-                <div class="col-3">
+                <div class="col-md-4">
                     <label for="status">{{ __('Frontend/general.status') }}</label>
                     <select name="status" class="form-control">
                         <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>{{ __('Frontend/general.active') }}</option>

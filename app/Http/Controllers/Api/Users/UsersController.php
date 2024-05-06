@@ -56,7 +56,7 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
             'email'         => 'required|email',
-            'mobile'        => 'required|numeric',
+            'phone_number'        => 'required|numeric',
             'bio'           => 'nullable|min:10',
             'receive_email' => 'required',
             'user_image'    => 'nullable|image|max:20000,mimes:jpeg,jpg,png'
@@ -67,7 +67,7 @@ class UsersController extends Controller
 
         $data['name']           = $request->name;
         $data['email']          = $request->email;
-        $data['mobile']         = $request->mobile;
+        $data['phone_number']         = $request->phone_number;
         $data['bio']            = $request->bio;
         $data['receive_email']  = $request->receive_email;
 

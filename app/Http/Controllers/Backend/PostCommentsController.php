@@ -26,10 +26,6 @@ class PostCommentsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_post_comments,show_post_comments')) {
-            return redirect('admin/index');
-        }
-
         $comments = Comment::query()
             ->when(request('keyword') != '', function($query) {
                 $query->search(request('keyword'));
@@ -66,19 +62,12 @@ class PostCommentsController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_post_comments')) {
-            return redirect('admin/index');
-        }
-
         $comment = Comment::whereId($id)->first();
         return view('backend.post_comments.edit', compact('comment'));
     }
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_post_comments')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'          => 'required',
@@ -118,9 +107,6 @@ class PostCommentsController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_post_comments')) {
-            return redirect('admin/index');
-        }
 
         $comment = Comment::whereId($id)->first();
         $comment->delete();

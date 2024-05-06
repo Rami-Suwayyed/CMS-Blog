@@ -13,8 +13,8 @@
                 <nav class="mainmenu__nav">
                     <ul class="meninmenu d-flex justify-content-start">
                         <li class="drop with--one--item"><a href="{{ route('frontend.index') }}">{{ __('Frontend/general.home') }}</a></li>
-                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', config('app.locale') == 'ar' ? 'نبذة-عنا' : 'about-us') }}">{{ __('Frontend/general.about_us') }}</a></li>
-                        <li class="drop with--one--item"><a href="{{ route('frontend.posts.show', config('app.locale') == 'ar' ? 'رؤيتنا' : 'our-vision') }}">{{ __('Frontend/general.our_vision') }}</a></li>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.pages.show',  'about-us') }}">{{ __('Frontend/general.about_us') }}</a></li>
+                        <li class="drop with--one--item"><a href="{{ route('frontend.pages.show',  'our-vision') }}">{{ __('Frontend/general.our_vision') }}</a></li>
                         <li class="drop"><a href="javascript:void(0);">{{ __('Frontend/general.blog') }}</a>
                             <div class="megamenu dropdown">
                                 <ul class="item item01">
@@ -50,7 +50,7 @@
                             <div class="content-inner">
                                 <div class="switcher-currency">
                                     <strong class="label switcher-label">
-                                        <span>My Account</span>
+                                        <span>{{__('Frontend/auth.my_account')}}</span>
                                     </strong>
                                     <div class="switcher-options">
                                         <div class="switcher-currency-trigger">
@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <!-- Start Mobile Menu -->
+        <!-- Start Phone Number Menu -->
         <div class="row d-none">
             <div class="col-lg-12 d-none">
                 <nav class="mobilemenu__nav">
@@ -96,10 +96,10 @@
                 </nav>
             </div>
         </div>
-        <!-- End Mobile Menu -->
+        <!-- End Phone Number Menu -->
         <div class="mobile-menu d-block d-lg-none">
         </div>
-        <!-- Mobile Menu -->
+        <!-- Phone Number Menu -->
     </div>
 </header>
 <!-- //Header -->

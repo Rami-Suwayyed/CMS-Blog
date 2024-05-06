@@ -1,35 +1,32 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Mindscms\Entrust\EntrustRole;
-use Nicolaslopezj\Searchable\SearchableTrait;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
-class Role extends EntrustRole
+class Role extends Model
 {
-    use HasFactory, SearchableTrait;
+    use HasFactory , HasTranslations;
 
-    protected $guarded = [];
 
-    protected $searchable = [
-        'name' => 10,
-        'display_name' => 10,
-        'display_name_en' => 10,
-        'description' => 10,
-        'description_en' => 10,
-        'allowed_route' => 10,
-    ];
+    protected $fillable = array('id','name');
 
-    public function display_name()
+    public $translatable = ['name'];
+
+
+
+    public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return config('app.locale') == 'ar' ? $this->display_name : $this->display_name_en;
+        return $this->belongsToMany(Permission::class, "role_permission", "role_id", "permission_id");
     }
 
-    public function description()
+    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return config('app.locale') == 'ar' ? $this->description : $this->description_en;
+        return $this->hasMany(User::class, "role_id", "id");
     }
+
+
 
 }

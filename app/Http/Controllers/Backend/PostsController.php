@@ -29,9 +29,6 @@ class PostsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_posts,show_posts')) {
-            return redirect('admin/index');
-        }
 
         $posts = Post::with(['user', 'category', 'comments'])
             ->wherePostType('post')
@@ -60,10 +57,6 @@ class PostsController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_posts')) {
-            return redirect('admin/index');
-        }
-
         $tags = Tag::select('id', 'name', 'name_en')->get();
         $categories = Category::orderBy('id', 'desc')->select('id', 'name', 'name_en')->get();
         return view('backend.posts.create', compact('categories', 'tags'));
@@ -71,10 +64,6 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_posts')) {
-            return redirect('admin/index');
-        }
-
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
             'title_en'      => 'required',
@@ -149,9 +138,6 @@ class PostsController extends Controller
 
     public function show($id)
     {
-        if (!\auth()->user()->ability('admin', 'display_posts')) {
-            return redirect('admin/index');
-        }
 
         $post = Post::with(['media', 'category', 'user', 'comments'])->whereId($id)->wherePostType('post')->first();
         return view('backend.posts.show', compact('post'));
@@ -159,9 +145,6 @@ class PostsController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_posts')) {
-            return redirect('admin/index');
-        }
         $tags = Tag::select('id', 'name', 'name_en')->get();
         $categories = Category::orderBy('id', 'desc')->select('id', 'name', 'name_en')->get();
         $post = Post::with('media')->whereId($id)->wherePostType('post')->first();
@@ -171,9 +154,6 @@ class PostsController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_posts')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
@@ -252,10 +232,6 @@ class PostsController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_posts')) {
-            return redirect('admin/index');
-        }
-
         $post = Post::whereId($id)->wherePostType('post')->first();
 
         if ($post) {
@@ -282,9 +258,6 @@ class PostsController extends Controller
 
     public function removeImage(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'delete_posts')) {
-            return redirect('admin/index');
-        }
 
         $media = PostMedia::whereId($request->media_id)->first();
         if ($media) {

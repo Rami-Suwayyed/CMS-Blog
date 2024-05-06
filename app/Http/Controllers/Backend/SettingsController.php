@@ -20,9 +20,6 @@ class SettingsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_settings,show_settings')) {
-            return redirect('admin/index');
-        }
 
         $section = (request('section') != '') ? request('section') : 'general';
         $settings_sections = Setting::select('section', 'section_en')->distinct()->get();

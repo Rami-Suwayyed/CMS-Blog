@@ -36,7 +36,17 @@
                     </div>
                 </article>
             @empty
-                <div class="text-center">{{ __('Frontend/general.no_posts_found') }}</div>
+                <div class="content text-center">
+                    @if(request('keyword'))
+                    <h1>{{ __('Frontend/general.search_results') }}</h1>
+                    <br>
+                    <h4>{{ __('Frontend/general.search_results_for') }} :  {{ old('keyword', request('keyword')) }}</h4>
+                    @endif
+                    <br>
+                    <h4>{{ __('Frontend/general.no_posts_found') }}</h4>
+                    <br>
+                    <button class="btn btn-outline-primary btn-lg btn-block" href="{{ route('frontend.index') }}">{{ __('Frontend/general.back_to_home') }}</button>
+                </div>
             @endforelse
         </div>
         {!! $posts->links() !!}

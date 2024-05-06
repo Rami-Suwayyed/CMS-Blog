@@ -27,10 +27,6 @@ class PagesController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_pages,show_pages')) {
-            return redirect('admin/index');
-        }
-
         $pages = Page::wherePostType('page')
             ->when(request('keyword') != '', function($query) {
                 $query->search(request('keyword'));
@@ -52,19 +48,12 @@ class PagesController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_pages')) {
-            return redirect('admin/index');
-        }
-
         $categories = Category::orderBy('id', 'desc')->select('id', 'name', 'name_en')->get();
         return view('backend.pages.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_pages')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
@@ -118,19 +107,12 @@ class PagesController extends Controller
 
     public function show($id)
     {
-        if (!\auth()->user()->ability('admin', 'display_pages')) {
-            return redirect('admin/index');
-        }
-
         $page = Page::with(['media'])->whereId($id)->wherePostType('page')->first();
         return view('backend.pages.show', compact('page'));
     }
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_pages')) {
-            return redirect('admin/index');
-        }
 
         $categories = Category::orderBy('id', 'desc')->select('id', 'name', 'name_en')->get();
         $page = Page::with(['media'])->whereId($id)->wherePostType('page')->first();
@@ -140,9 +122,6 @@ class PagesController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_pages')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
@@ -204,10 +183,6 @@ class PagesController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_pages')) {
-            return redirect('admin/index');
-        }
-
         $page = Page::whereId($id)->wherePostType('page')->first();
 
         if ($page) {
@@ -234,9 +209,6 @@ class PagesController extends Controller
 
     public function removeImage(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'delete_pages')) {
-            return redirect('admin/index');
-        }
 
         $media = PostMedia::whereId($request->media_id)->first();
         if ($media) {

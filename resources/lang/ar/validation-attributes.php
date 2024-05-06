@@ -20,7 +20,7 @@ return [
         'last_name'             => 'اسم العائلة',
         'message'               => 'الرسالة',
         'minute'                => 'دقيقة',
-        'mobile'                => 'الجوال',
+        'phone_number'                => 'الجوال',
         'month'                 => 'الشهر',
         'name'                  => 'الاسم',
         'password'              => 'كلمة المرور',

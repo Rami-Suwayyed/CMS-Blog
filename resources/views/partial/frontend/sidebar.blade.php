@@ -4,7 +4,7 @@
         <h3 class="widget-title">{{ __('Frontend/general.search') }}</h3>
         <form action="{{ route('frontend.search') }}" method="get">
             <div class="form-input">
-                <input type="text" name="keyword" value="{{ old('keyword', request('keyword')) }}" placeholder="{{ __('Frontend/general.search') }}">
+                <input type="text" name="keyword" value="{{ old('keyword', request('keyword')) }}" placeholder="{{ __('Frontend/general.search_here') }}">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </div>
         </form>

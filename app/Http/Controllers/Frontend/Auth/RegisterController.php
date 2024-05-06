@@ -63,10 +63,11 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'mobile' => ['required', 'numeric', 'unique:users'],
+            'phone_number' => ['required', 'numeric', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'user_image' => ['nullable', 'image', 'max:20000', 'mimes:jpeg,jpg,png'],
         ]);
+
     }
 
     /**
@@ -78,11 +79,15 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = User::create([
+            'user_role'=>'user',
             'name' => $data['name'],
             'username' => $data['username'],
             'email' => $data['email'],
-            'mobile' => $data['mobile'],
+            'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
+            'is_super_admin'=>0,
+            'receive_email'=>1,
+            'status'=>1,
         ]);
 
         if (isset($data['user_image'])) {

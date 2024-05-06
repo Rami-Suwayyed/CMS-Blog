@@ -9,6 +9,7 @@
             <li class="list-group-item"><a href="{{ route('users.post.create') }}">{{ __('Frontend/general.create_post') }}</a></li>
             <li class="list-group-item"><a href="{{ route('users.comments') }}">{{ __('Frontend/general.manage_comments') }}</a></li>
             <li class="list-group-item"><a href="{{ route('users.edit_info') }}">{{ __('Frontend/general.update_information') }}</a></li>
+            <li class="list-group-item"><a href="{{ route('users.change_password') }}">{{ __('Frontend/general.change_password') }}</a></li>
             <li class="list-group-item"><a href="{{ route('frontend.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Frontend/general.logout') }}</a></li>
         </ul>
     </aside>

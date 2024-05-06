@@ -21,45 +21,45 @@
             <form action="{{ route('admin.supervisors.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="name">{{ __('Backend/supervisors.name') }}</label>
                             <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                             @error('name')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="username">{{ __('Backend/supervisors.username') }}</label>
                             <input type="text" name="username" value="{{ old('username') }}" class="form-control">
                             @error('username')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="email">{{ __('Backend/supervisors.email') }}</label>
                             <input type="text" name="email" value="{{ old('email') }}" class="form-control">
                             @error('email')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="mobile">{{ __('Backend/supervisors.mobile') }}</label>
-                            <input type="text" name="mobile" value="{{ old('mobile') }}" class="form-control">
-                            @error('mobile')<span class="text-danger">{{ $message }}</span>@enderror
+                            <label for="phone_number">{{ __('Backend/supervisors.phone_number') }}</label>
+                            <input type="text" name="phone_number" value="{{ old('phone_number') }}" class="form-control">
+                            @error('phone_number')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="password">{{ __('Backend/supervisors.password') }}</label>
                             <input type="password" name="password" class="form-control">
                             @error('password')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <label for="status">{{ __('Backend/supervisors.status') }}</label>
                         <select name="status" class="form-control">
                             <option
@@ -94,14 +94,14 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
-                            <label for="permissions">{{ __('Backend/supervisors.permissions') }}</label>
-                            <select name="permissions[]" class="form-control select-multiple-tags" multiple="multiple">
-                                @foreach($permissions as $permission)
+                            <label for="roles">{{ __('Backend/supervisors.roles') }}</label>
+                            <select name="roles[]" class="form-control select-multiple-tags" multiple="multiple">
+                                @foreach($roles as $role)
                                     <option
-                                        value="{{ $permission->id }}" {{ in_array($permission->id, old('permissions[]', [])) ? 'selected' : '' }}>{{ $permission->display_name() }}</option>
+                                        value="{{ $role->id }}" {{ in_array($role->id, old('roles[]', [])) ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endforeach
                             </select>
-                            @error('permissions')<span class="text-danger">{{ $message }}</span>@enderror
+                            @error('roles')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
                 </div>

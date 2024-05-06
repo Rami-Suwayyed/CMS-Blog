@@ -21,9 +21,6 @@ class PermissionsController extends Controller
 
     public function index()
     {
-        if (!\auth()->user()->ability('admin', 'manage_permissions,show_permissions')) {
-            return redirect('admin/index');
-        }
 
         $permissions = Permission::query()
             ->when(request('keyword') != '', function($query) {
@@ -39,18 +36,12 @@ class PermissionsController extends Controller
 
     public function create()
     {
-        if (!\auth()->user()->ability('admin', 'create_permissions')) {
-            return redirect('admin/index');
-        }
         $main_permissions = Permission::whereParent(0)->select('id', 'display_name', 'display_name_en')->get();
         return view('backend.permissions.create', compact('main_permissions'));
     }
 
     public function store(Request $request)
     {
-        if (!\auth()->user()->ability('admin', 'create_permissions')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'              => 'required|unique:permissions,name',
@@ -104,10 +95,6 @@ class PermissionsController extends Controller
 
     public function edit($id)
     {
-        if (!\auth()->user()->ability('admin', 'update_permissions')) {
-            return redirect('admin/index');
-        }
-
         $permission = Permission::whereId($id)->first();
         $main_permissions = Permission::whereParent(0)->select('id', 'display_name', 'display_name_en')->get();
         return view('backend.permissions.edit', compact('permission', 'main_permissions'));
@@ -115,9 +102,6 @@ class PermissionsController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!\auth()->user()->ability('admin', 'update_permissions')) {
-            return redirect('admin/index');
-        }
 
         $validator = Validator::make($request->all(), [
             'name'              => 'required|unique:permissions,name,'.$id,
@@ -166,9 +150,6 @@ class PermissionsController extends Controller
 
     public function destroy($id)
     {
-        if (!\auth()->user()->ability('admin', 'delete_permissions')) {
-            return redirect('admin/index');
-        }
 
         Permission::whereId($id)->delete();
 
