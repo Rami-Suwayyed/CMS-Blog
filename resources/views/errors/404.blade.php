@@ -11,7 +11,7 @@
                 <h4><a href="#">{{ __('Frontend/general.page_not_found') }}</a></h4>
                 <p>{{ __('Frontend/general.page_not_found_message') }}</p>
                 <br>
-                <button class="btn btn-outline-primary btn-lg btn-block" href="{{ route('frontend.index') }}">{{ __('Frontend/general.back_to_home') }}</button>
+                <a class="btn btn-outline-primary btn-lg btn-block" href="{{ route('frontend.index') }}">{{ __('Frontend/general.back_to_home') }}</a>
             </div>
         </article>
     </div>

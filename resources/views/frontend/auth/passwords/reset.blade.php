@@ -13,7 +13,7 @@
                             <div class="account__form">
                                 <div class="input__box">
                                     <label for="email">{{ __('Frontend/auth.email_address') }}</label>
-                                    <input type="email" name="email" value="{{ old('email') }}">
+                                    <input type="email" name="email" value="{{ $email ?? old('email') }}" readonly>
                                     @error('email')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                                 <div class="input__box">

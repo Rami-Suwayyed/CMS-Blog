@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'broadcasting/*'], // Include your websocket-related routes
 
     'allowed_methods' => ['*'],
 
@@ -30,5 +30,7 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
+
+
 
 ];

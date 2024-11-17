@@ -1,8 +1,44 @@
 /*********************************************************************************
 
-	Template Name: Boighor Bookshop Responsive Bootstrap4 Template  
+	Template Name: Boighor Bookshop Responsive Bootstrap4 Template
 	Description: Template description
 	Version: 1.0
 	Note: This is custom css. All custom styles (user styles) declare here.
 
 **********************************************************************************/
+
+.list-group-item .image_user{
+    width: 200px;
+    height: 150px;
+    border-radius: 80%;
+    margin: 10px;
+}
+
+#user-image-info{
+    width: 200px;
+    height: 150px;
+    border-radius: 90%;
+    margin: 10px;
+    border: 1px solid #000;
+    box-shadow: 0 0 10px #000;
+}
+
+#imageinfo {
+    width: 20px;
+}
+.image-info{
+    width: 200px;
+    height: 150px;
+    border-radius: 90%;
+    margin: 10px;
+    border: 1px solid #000;
+    box-shadow: 0 0 10px #000;
+}
+
+.custom-file {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    margin-bottom: 0;
+}

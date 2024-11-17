@@ -108,18 +108,5 @@ class ViewServiceProvider extends ServiceProvider
             });
 
         }
-
-        if (request()->is('admin/*')) {
-
-            view()->composer('*', function ($view) {
-
-                if (!Cache::has('admin_side_menu')) {
-                    Cache::forever('admin_side_menu', Permission::tree());
-                }
-
-            });
-
-        }
-
     }
 }

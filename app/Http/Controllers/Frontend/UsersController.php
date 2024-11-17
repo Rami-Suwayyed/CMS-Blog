@@ -167,6 +167,9 @@ class UsersController extends Controller
         $data['category_id']        = $request->category_id;
 
         $post = auth()->user()->posts()->create($data);
+            Post::find($post->id)->update([
+                'slug' => Str::slug($post->title)
+            ]);
 
         if ($request->images && count($request->images) > 0) {
             $i = 1;

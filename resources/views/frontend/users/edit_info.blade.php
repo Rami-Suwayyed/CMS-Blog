@@ -52,7 +52,9 @@
             <div class="row">
                 @if (auth()->user()->user_image != '')
                     <div class="col-12">
-                        <img src="{{ asset('assets/users/' . auth()->user()->user_image) }}" class="img-fluid" width="150" alt="{{ auth()->user()->name }}">
+                        <div class="dev-info" >
+                            <img class="image-info" src="{{ asset('assets/users/' . auth()->user()->user_image) }}" alt="{{ auth()->user()->name }}">
+                        </div>
                     </div>
                 @endif
                 <div class="col-12">

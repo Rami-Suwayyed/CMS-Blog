@@ -62,7 +62,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email:rfc,dns' , 'max:255', 'unique:users'],
             'phone_number' => ['required', 'numeric', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'user_image' => ['nullable', 'image', 'max:20000', 'mimes:jpeg,jpg,png'],
@@ -100,7 +100,7 @@ class RegisterController extends Controller
                 $user->update(['user_image' => $filename]);
             }
         }
-        $user->attachRole(Role::whereName('user')->first()->id);
+        $user->attachRole(Role::whereId(3)->first()->id);
 
         return $user;
 
